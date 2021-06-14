@@ -73,8 +73,8 @@ if ($.isNode()) {
       '活动时间：2021-05-24至2021-06-20\n' +
       '脚本更新时间：2021-06-08 19:00\n'
       );
-  for (let i = 0; i < 1; i++) {
-    if (cookiesArr[i]) {
+  for (let i = 0; i < cookiesArr.length; i++) {
+    if (cookiesArr[i]) { 
       $.cookie = cookiesArr[i];
       $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
       $.index = i + 1;
