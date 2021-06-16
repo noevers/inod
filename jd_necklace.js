@@ -21,6 +21,7 @@ cron "10 0,20 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master
 const $ = new Env('点点券');
 let allMessage = ``;
 const notify = $.isNode() ? require('./sendNotify') : '';
+const ZooFaker = $.isNode() ? require('./noevers_inod_master_ZooFaker_Necklace.js') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html%22%20%7D`
@@ -44,9 +45,10 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     return;
   }
   console.log(`\n通知：京东已在领取任务、签到、领取点点券三个添加了log做了校验，暂时无可解决\n`);
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 1; i <2; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
+	  $.cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
@@ -107,6 +109,7 @@ async function doTask() {
     if (item.taskStage === 0) {
       console.log(`【${item.taskName}】 任务未领取,开始领取此任务`);
       await necklace_startTask(item.id);
+	  
       console.log(`【${item.taskName}】 任务领取成功,开始完成此任务`);
       await $.wait(1000);
       await reportTask(item);
@@ -117,6 +120,7 @@ async function doTask() {
     } else if (item.taskStage === 1) {
       console.log(`\n【${item.taskName}】 任务已领取但未完成,开始完成此任务`);
       await reportTask(item);
+	  
     }
   }
 }
@@ -152,11 +156,9 @@ async function reportTask(item = {}) {
   if (item['taskType'] === 4) await doAppTask('4', item.id);
 }
 //每日签到福利
-function necklace_sign() {
+async function necklace_sign() {
+	let body=await ZooFaker.getBody($);
   return new Promise(resolve => {
-    const body = {
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
     $.post(taskPostUrl("necklace_sign", body), async (err, resp, data) => {
       try {
         if (err) {
@@ -219,12 +221,14 @@ function necklace_exchangeGift(scoreNums) {
   })
 }
 //领取奖励
-function necklace_chargeScores(bubleId) {
+async function necklace_chargeScores(bubleId) {
+
+	$.id = bubleId;
+	$.action = 'chargeScores';
+    let body=await ZooFaker.getBody($);
+	
   return new Promise(resolve => {
-    const body = {
-      bubleId,
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
+	      
     $.post(taskPostUrl("necklace_chargeScores", body), async (err, resp, data) => {
       try {
         if (err) {
@@ -251,14 +255,14 @@ function necklace_chargeScores(bubleId) {
     })
   })
 }
-function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = "") {
+async function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = "") {
+	$.id = taskId;
+	$.action = 'startTask';
+    let body=await ZooFaker.getBody($);
   return new Promise(resolve => {
-    let body = {
-      taskId,
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
-    if (itemId) body['itemId'] = itemId;
-    $.post(taskPostUrl(functionId, body), async (err, resp, data) => {
+
+	let options= taskPostUrl(functionId, body);
+    $.post(options, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -283,12 +287,14 @@ function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = 
     })
   })
 }
-function necklace_getTask(taskId) {
+async function necklace_getTask(taskId) {
+  
+	$.id = taskId;
+	$.action = 'startTask';
+    let body=await ZooFaker.getBody($);
   return new Promise(resolve => {
-    const body = {
-      taskId,
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
+	//$.id = taskId;
+
     $.taskItems = [];
     $.post(taskPostUrl("necklace_getTask", body), async (err, resp, data) => {
       try {
@@ -382,6 +388,7 @@ async function doAppTask(type = '3', id) {
 function getCcTaskList(functionId, body, type = '3') {
   let url = '';
   return new Promise(resolve => {
+	  
     if (functionId === 'getCcTaskList') {
       url = `https://api.m.jd.com/client.action?functionId=${functionId}&body=${escape(JSON.stringify(body))}&uuid=8888888&client=apple&clientVersion=9.4.1&st=1614320848090&sign=d3259c0c19f6c792883485ae65f8991c&sv=111`
     }
@@ -427,24 +434,26 @@ function getCcTaskList(functionId, body, type = '3') {
     })
   })
 }
-function taskPostUrl(function_id, body = {}) {
+function taskPostUrl(function_id, body) {
   const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   return {
-    url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&body=${escape(JSON.stringify(body))}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
+    url: `${JD_API_HOST}?appid=coupon-necklace&functionId=${function_id}&loginType=2&client=coupon-necklace&t=${time}`,
     // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
     headers: {
-      "accept": "*/*",
-      "accept-encoding": "gzip, deflate, br",
-      "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-      "content-length": "0",
-      "cookie": cookie,
+      "Accept": "application/json, text/plain, */*",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+      "Cookie": cookie,
       "origin": "https://h5.m.jd.com",
-      "referer": "https://h5.m.jd.com/",
+      "Referer": "https://h5.m.jd.com/",
       "sec-fetch-dest": "empty",
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-site",
-      "user-agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-    }
+	  "Host": "api.m.jd.com",
+	  "Content-Type":"application/x-www-form-urlencoded",
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+    },
+	body:body
   }
 }
 function TotalBean() {
