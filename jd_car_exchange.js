@@ -106,15 +106,22 @@ function taskUrl(function_id, body = {}) {
   return {
      url: `${JD_API_HOST}${function_id}?timestamp=${new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000}`,
     headers: {
-      "Accept": "*/*",
+      "Accept": "application/json, text/plain, */*",
       "Accept-Encoding": "gzip, deflate, br",
-      "Accept-Language": "zh-cn",
       "Connection": "keep-alive",
+	  "sec-ch-ua": '"Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
       "Content-Type": "application/x-www-form-urlencoded",
       "Host": "car-member.jd.com",
+	  "sec-ch-ua-mobile": "?0",
       "Referer": "https://h5.m.jd.com/babelDiy/Zeus/44bjzCpzH9GpspWeBzYSqBA7jEtP/index.html",
       "Cookie": cookie,
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+	  "Sec-Fetch-Site": "same-site",
+	  "Sec-Fetch-Mode": "cors",
+	  "Sec-Fetch-Dest": "empty",
+	  "Referer": "https://h5.m.jd.com/",
+	  "Origin": "https://h5.m.jd.com",
+	  "ActivityId":"39443aee3ff74fcb806a6f755240d127",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36"
     }
   }
 }
