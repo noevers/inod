@@ -48,7 +48,7 @@ const JD_API_HOST = 'https://car-member.jd.com/api/';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  for (let j = 0; j < 20; ++j)
+  for (let j = 0; j < 1; ++j)
     for (let i = 0; i < cookiesArr.length; i++) {
       if (cookiesArr[i]) {
         cookie = cookiesArr[i];
@@ -82,7 +82,10 @@ function showMsg() {
 
 function exchange() {
   return new Promise(resolve => {
-    $.get(taskUrl('v1/user/exchange/bean/check'), (err, resp, data) => {
+	
+	let getAction = taskUrl('v1/user/exchange/bean/check');
+	console.log(getAction.url);
+    $.get(getAction, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -104,24 +107,21 @@ function exchange() {
 
 function taskUrl(function_id, body = {}) {
   return {
-     url: `${JD_API_HOST}${function_id}?timestamp=${new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000}`,
+    url: `${JD_API_HOST}${function_id}?timestamp=${new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000}`,
     headers: {
+	  "Host": "car-member.jd.com",
+	  "Connection": "keep-alive",
       "Accept": "application/json, text/plain, */*",
-      "Accept-Encoding": "gzip, deflate, br",
-      "Connection": "keep-alive",
-	  "sec-ch-ua": '"Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Host": "car-member.jd.com",
-	  "sec-ch-ua-mobile": "?0",
-      "Referer": "https://h5.m.jd.com/babelDiy/Zeus/44bjzCpzH9GpspWeBzYSqBA7jEtP/index.html",
+	  "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+      "ActivityId":"39443aee3ff74fcb806a6f755240d127",
+	  "Accept-Encoding": "gzip, deflate, br",
       "Cookie": cookie,
 	  "Sec-Fetch-Site": "same-site",
 	  "Sec-Fetch-Mode": "cors",
 	  "Sec-Fetch-Dest": "empty",
 	  "Referer": "https://h5.m.jd.com/",
 	  "Origin": "https://h5.m.jd.com",
-	  "ActivityId":"39443aee3ff74fcb806a6f755240d127",
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36"
+	  "Accept-Language":"zh-CN,zh;q=0.9,en;q=0.8"
     }
   }
 }
