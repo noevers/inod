@@ -38,7 +38,7 @@ $.tuan = null;
 				    $.userNameSecond = decodeURIComponent(
 					$.secondCookie.match(/pt_pin=(.+?);/) && $.secondCookie.match(/pt_pin=(.+?);/)[1],
 				   ); 
-				   helpFriendTuan($.tuan);
+				  await helpFriendTuan($.tuan,$.userNameSecond);
 				}
 				await 5000;
 		   }
@@ -68,7 +68,7 @@ function getCookies() {
 
 
 
-function helpFriendTuan(body) {
+async function helpFriendTuan(body,userNameSecond) {
   return new Promise(resolve => {
     const data = {
       "activityIdEncrypted": body['activityIdEncrypted'],
@@ -86,17 +86,17 @@ function helpFriendTuan(body) {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.success) {
-              console.log(`\n【京东账号:${$.userNameSecond}】助力结果：助力成功\n`)
+              console.log(`\n【京东账号:${userNameSecond}】助力结果：助力成功\n`)
             } else {
-              if (data.resultCode === '9200008') console.log(`【京东账号:${$.userNameSecond}】助力结果：不能助力自己\n`)
-              else if (data.resultCode === '9200011') console.log(`【京东账号:${$.userNameSecond}】助力结果：已经助力过\n`)
+              if (data.resultCode === '9200008') console.log(`【京东账号:${userNameSecond}】助力结果：不能助力自己\n`)
+              else if (data.resultCode === '9200011') console.log(`【京东账号:${userNameSecond}】助力结果：已经助力过\n`)
               else if (data.resultCode === '2400205') {
-				  console.log(`【京东账号:${$.userNameSecond}】助力结果：团已满\n`);
+				  console.log(`【京东账号:${userNameSecond}】助力结果：团已满\n`);
 				  $.stop = 1;
 				  $.tuan = null;
 			  }
-              else if (data.resultCode === '2400203') {console.log(`【京东账号:${$.userNameSecond}】助力结果：助力次数已耗尽\n`);}
-              else if (data.resultCode === '9000000') {console.log(`【京东账号:${$.userNameSecond}】助力结果：活动火爆，跳出\n`);}
+              else if (data.resultCode === '2400203') {console.log(`【京东账号:${userNameSecond}】助力结果：助力次数已耗尽\n`);}
+              else if (data.resultCode === '9000000') {console.log(`【京东账号:${userNameSecond}】助力结果：活动火爆，跳出\n`);}
               else console.log(`助力结果：未知错误\n${JSON.stringify(data)}\n\n`)
             }
           }
