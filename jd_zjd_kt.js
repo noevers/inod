@@ -7,8 +7,9 @@
  * 参考 shylocks https://github.com/shylocks
  * OPEN_TUAN_NUM 开团的账号数，默认2
  
+  loon:
   [Script]
-  cron 5 0,8,9,11 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js, tag=京东赚京东开团, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
+  cron "5 0,8,9,11 * * *" https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js, tag=京东赚京东开团, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
  *
  *
  **/
