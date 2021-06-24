@@ -756,6 +756,32 @@
         "https://raw.githubusercontent.com/58xinian/icon/master/jd_jxd_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jd_jxd.png"
       ]
+    },
+    {
+      "id": "jd_zjd_kt",
+      "name": "瓜分京豆开团",
+      "keys": [],
+      "settings": [
+        {
+          "id": "jdZjdKt",
+          "name": "瓜分京豆开团",
+          "val": false,
+          "type": "boolean",
+          "desc": "瓜分京豆开团"
+        }
+      ],
+      "author": "@lxk0301",
+      "repo": "https://gitee.com/lxk0301/jd_scripts/tree/master",
+      "scripts":[
+        {
+          "name" : "瓜分京豆开团",
+          "script" : "https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zjd_kt.js"
+        }
+      ],
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jd_jxd_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jd_jxd.png"
+      ]
     }
   ]
 }
