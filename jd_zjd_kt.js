@@ -1,6 +1,6 @@
 /*
- * 京东赚京豆开团
- * OPEN_TUAN_NUM 开团的账号数，默认2
+ 京东赚京豆开团
+ OPEN_TUAN_NUM 开团的账号数，默认2
 
 ===================quantumultx================
 [task_local]
