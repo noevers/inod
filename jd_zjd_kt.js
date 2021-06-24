@@ -1,18 +1,15 @@
 /*
- * @Author: whyour
- * @Github: https://github.com/whyour
- * @Date: 2020-12-24 11:30:44
- * @LastEditors: whyour
- * @LastEditTime: 2021-03-23 20:57:22
- * 参考 shylocks https://github.com/shylocks
+ * 京东赚京豆开团
  * OPEN_TUAN_NUM 开团的账号数，默认2
- 
-  loon:
-  [Script]
-  cron "5 0,8,9,11 * * *" https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js, tag=京东赚京东开团, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
- *
- *
- **/
+
+===================quantumultx================
+[task_local]
+"5 0,8,9,11 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_daily_lottery.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+=====================Loon================
+[Script]
+cron  "5 0,8,9,11 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_daily_lottery.js, tag=每日抽奖
+====================Surge================
+*/
 
 const $ = new Env('京东赚京豆开团');
 const notify = $.isNode() ? require('./sendNotify') : '';
