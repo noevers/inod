@@ -31,7 +31,16 @@ $.tuan = null;
       console.log(`\n【京东账号${i + 1}】${userName}开团`);
 	  $.stop = 0;
 	  await getUserTuanInfo();
-	  if($.tuan&&$.stop==0){
+	  await helpSelf();
+     }
+  }
+})()
+.catch((e) => $.logErr(e))
+.finally(() => $.done());
+
+ async  function helpSelf(){
+
+   if($.tuan&&$.stop==0){
 		   for (let j = 0; j < $.cookieArr.length; j++) {
 				$.secondCookie = $.cookieArr[j];
 				if ($.secondCookie) {
@@ -42,12 +51,11 @@ $.tuan = null;
 				}
 				await 5000;
 		   }
-	  }
-    }
-  }
-})()
-.catch((e) => $.logErr(e))
-.finally(() => $.done());
+
+
+      }
+}
+
 
 function getCookies() {
   if ($.isNode()) {
