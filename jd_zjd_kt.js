@@ -32,7 +32,7 @@ $.tuan = null;
 	  $.stop = 0;
 	  await getUserTuanInfo();
 	  if($.tuan&&$.stop==0){
-		   for (let j = 0; j < cookieArr.length; j++) {
+		   for (let j = 0; j < $.cookieArr.length; j++) {
 				$.secondCookie = $.cookieArr[j];
 				if ($.secondCookie) {
 				    $.userNameSecond = decodeURIComponent(
