@@ -15,7 +15,7 @@
  *
  **/
 
-const $ = new Env('京东赚京豆开团互助');
+const $ = new Env('京东赚京豆嫖助力');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 
