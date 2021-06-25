@@ -5,10 +5,10 @@
 ===================quantumultx================
 [task_local]
 #京东赚京豆开团
-5 0,8,9,11 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_daily_lottery.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+0 20 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zjd_kt.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 =====================Loon================
 [Script]
-cron "5 0,8,9,11 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zjd_kt.js, tag=京东赚京豆开团
+cron "0 20 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zjd_kt.js, tag=京东赚京豆开团
 ====================Surge================
 */
 
