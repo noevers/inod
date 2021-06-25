@@ -12,7 +12,7 @@ cron "50 0 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd
 ====================Surge================
 */
 
-const $ = new Env('京东赚京豆开团');
+const $ = new Env('京东赚京豆补团');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
