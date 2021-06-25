@@ -1,26 +1,21 @@
 /*
- * @Author: whyour
- * @Github: https://github.com/whyour
- * @Date: 2020-12-24 11:30:44
- * @LastEditors: whyour
- * @LastEditTime: 2021-03-23 20:57:22
- * 参考 shylocks https://github.com/shylocks
+
 
   quanx:
   [task_local]
-  0 15 10 ? * MON https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_hh_jc.js, tag=京东黑号等级, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
+  10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_hh_jc.js, tag=京东赚京东开团, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
 
   
-  0 15 10 ? * MON script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_hh_jc.js, tag=京东黑号等级
+  10 * * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_hh_jc.js, tag=京东赚京东开团
 
   surge:
   [Script]
-  0 15 10 ? * MON = type=cron,cronexp=0 15 10 ? * MON,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js,
+  京东黑号检测 = type=cron,cronexp=10 * * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_hh_jc.js,
  *
  *
  **/
 
-const $ = new Env('京东黑号等级');
+const $ = new Env('京东黑号检测');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JD_API_HOST = 'https://vip.m.jd.com/scoreDetail/current';
 
@@ -37,7 +32,7 @@ $.currentCookie = '';
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
-      await getUserTuanInfo();
+      await getUserInfo();
 
     }
   }
@@ -68,15 +63,15 @@ function getUserInfo() {
   return new Promise(resolve => {
     $.get(getUrl(), async (err, resp, data) => {
       try {
-        const { success, model: { scoreDescription { userScore { creditLevel} } } = {} } = JSON.parse(data);
+        const { success, model: { scoreDescription :{ userScore :{ creditLevel} } } = {} } = JSON.parse(data);
         if (success) {
-          if (!creditLevel) {
-            	$.log('信用等级：'creditLevel);
+          if (creditLevel) {
+            	console.log(`信用等级：`+creditLevel);
           } else {
-            $.log(data);
+            console.log(data);
           }
         }else{
-			$.log(data);
+			console.log(data);
 
 		}
       } catch (e) {
