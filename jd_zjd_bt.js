@@ -1,10 +1,10 @@
 /*
- 京东赚京豆开团
- OPEN_TUAN_NUM 开团的账号数，默认2
+ 京东赚京豆补团
+ OPEN_TUAN_NUM 补团的账号数，默认2
 
 ===================quantumultx================
 [task_local]
-#京东赚京豆开团
+#京东赚京豆补团
 50 0 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_zjd_bt.js, tag=每日抽奖, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 =====================Loon================
 [Script]
@@ -128,7 +128,7 @@ function getUserTuanInfo() {
               activityIdEncrypted: id,
               assistStartRecordId: assistStartRecordId,
               assistedPinEncrypted: encPin,
-			        channel:channel
+	      channel:channel
             };
           } else {
            // createTuan(id);
