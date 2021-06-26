@@ -25,7 +25,9 @@ $.tuan = null;
 
 !(async () => {
   if (!getCookies()) return;
-  for (let i = 0; i < $.cookieArr.length; i++) {
+  
+  console.log( $.cookieArr.length)
+  for (let i = 0 ;i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
       const userName = decodeURIComponent(
@@ -34,7 +36,7 @@ $.tuan = null;
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getUserTuanInfo();
 	  await submitInviteId2(userName);
-      submitInviteId(userName);
+      await submitInviteId(userName);
 
     }
   }
@@ -112,7 +114,6 @@ function submitInviteId(userName) {
         try {
           const { code, data = {} } = JSON.parse(_data);
           console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码1提交成功\n`)
-		  $.tuan = null;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -124,53 +125,12 @@ function submitInviteId(userName) {
 }
 
 
-
-async function distributeBeanActivity() {
-  try {
-    $.tuan = ''
-    $.hasOpen = false;
-    $.assistStatus = 0;
-    await getUserTuanInfo()
-    if (!$.tuan && ($.assistStatus === 3 || $.assistStatus === 2 || $.assistStatus === 0) && $.canStartNewAssist) {
-      console.log(`准备再次开团`)
-      await openTuan()
-      if ($.hasOpen) await getUserTuanInfo()
-    }
-    if ($.tuan && $.tuan.hasOwnProperty('assistedPinEncrypted') && $.assistStatus !== 3) {
-      $.tuanList.push($.tuan);
-      const code = Object.assign($.tuan, {"time": Date.now()});
-      $.http.post({
-        url: `http://go.chiang.fun/autocommit`,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ "act": "zuan", code }),
-        timeout: 30000
-      }).then((resp) => {
-        if (resp.statusCode === 200) {
-          try {
-            let { body } = resp;
-            body = JSON.parse(body);
-            if (body['code'] === 200) {
-              console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码提交成功\n`)
-            } else {
-              console.log(`【赚京豆-瓜分京豆】邀请码提交失败:${JSON.stringify(body)}\n`)
-            }
-          } catch (e) {
-            console.log(`【赚京豆-瓜分京豆】邀请码提交异常:${e}`)
-          }
-        }
-      }).catch((e) => console.log(`【赚京豆-瓜分京豆】邀请码提交异常:${e}`));
-    }
-  } catch (e) {
-    $.logErr(e);
-  }
-}
-
 function getUserTuanInfo() {
   let body = { paramData: { channel: 'FISSION_BEAN' } };
   return new Promise(resolve => {
     $.get(taskTuanUrl('distributeBeanActivityInfo', body), async (err, resp, data) => {
       try {
-        $.log(data);
+        //$.log(data);
         const { success, data: { id, canStartNewAssist, encPin, assistStartRecordId,channel } = {} } = JSON.parse(data);
         if (success) {
           if (!canStartNewAssist) {
@@ -199,7 +159,7 @@ function createTuan(id) {
   return new Promise(resolve => {
     $.get(taskTuanUrl('vvipclub_distributeBean_startAssist', body), async (err, resp, data) => {
       try {
-        $.log(data);
+        //$.log(data);
         data = JSON.parse(data);
         if (data.success) {
           await getUserTuanInfo();
