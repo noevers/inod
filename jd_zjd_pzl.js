@@ -32,6 +32,7 @@ $.tuan = null;
       const userName = decodeURIComponent(
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
+	  
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getUserTuanInfo();
 	  await submitInviteId2(userName);
@@ -62,7 +63,7 @@ function getCookies() {
 function submitInviteId2(userName) {
 		
 		
-console.log('第二个池子提交：');
+console.log('lx池子提交：');
   return new Promise(resolve => {
     if (!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted) {
       resolve();
@@ -81,7 +82,7 @@ console.log('第二个池子提交：');
 				let { body } = resp;
 				body = JSON.parse(body);
 				if (body['code'] === 200) {
-				  console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
+				  console.log(`\n【京东账号${userName}）的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
 				} else {
 				  console.log(`【赚京豆-瓜分京豆】邀请码提交失败:${JSON.stringify(body)}\n`)
 				}
@@ -100,7 +101,7 @@ console.log('第二个池子提交：');
 }
 
 function submitInviteId(userName) {
-	console.log('第一个池子提交：');
+	console.log('ninesix池子提交：');
   return new Promise(resolve => {
     if (!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted) {
       resolve();
@@ -119,7 +120,7 @@ function submitInviteId(userName) {
       (err, resp, _data) => {
         try {
           const { code, data = {} } = JSON.parse(_data);
-          console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码1提交成功\n`)
+          console.log(`\n【京东账号${userName}的【赚京豆-瓜分京豆】好友互助码1提交成功\n`)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
