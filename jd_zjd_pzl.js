@@ -24,9 +24,8 @@ $.currentCookie = '';
 $.tuan = null;
 
 !(async () => {
+
   if (!getCookies()) return;
-  
-  console.log( $.cookieArr.length)
   for (let i = 0 ;i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
@@ -70,28 +69,33 @@ console.log('第二个池子提交：');
       return;
     }
     const code = Object.assign($.tuan, {"time": Date.now()});
-    $.http.post({
+    $.post({
         url: `http://go.chiang.fun/autocommit`,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ "act": "zuan", code }),
         timeout: 1000
-      }).then((resp) => {
-       if (resp.statusCode === 200) {
-          try {
-            let { body } = resp;
-            body = JSON.parse(body);
-            if (body['code'] === 200) {
-              console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
-            } else {
-              console.log(`【赚京豆-瓜分京豆】邀请码提交失败:${JSON.stringify(body)}\n`)
-            }
-          } catch (e) {
-            console.log(`【赚京豆-瓜分京豆】邀请码提交异常:${e}`)
-          }
+      },
+	  (err, resp, _data) => {
+		  try {
+			if (resp.statusCode === 200) {
+				let { body } = resp;
+				body = JSON.parse(body);
+				if (body['code'] === 200) {
+				  console.log(`\n【京东账号${$.index}（${$.nickName || $.UserName}）的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
+				} else {
+				  console.log(`【赚京豆-瓜分京豆】邀请码提交失败:${JSON.stringify(body)}\n`)
+				}
+			  
+			}else{
+				onsole.log(`【赚京豆-瓜分京豆】邀请码提交异常:${resp}`)
+			}
+		  } catch (e) {
+				console.log(`【赚京豆-瓜分京豆】邀请码提交异常:${e}`)
+		 }finally {
+          resolve();
         }
-      }).catch((e) => console.log(`【赚京豆-瓜分京豆】邀请码提交异常:${e}`));
-    
-	
+      }
+	  )
   });
 }
 
@@ -100,6 +104,8 @@ function submitInviteId(userName) {
   return new Promise(resolve => {
     if (!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted) {
       resolve();
+	  	  console.log('咋啦：');
+
       return;
     }
     $.post(
