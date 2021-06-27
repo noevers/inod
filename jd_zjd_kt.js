@@ -41,13 +41,15 @@ $.tuan = null;
  async  function helpSelf(){
 
    if($.tuan&&$.stop==0){
+	   
 		   for (let j = 0; j < $.cookieArr.length; j++) {
 				$.secondCookie = $.cookieArr[j];
 				if ($.secondCookie) {
 				    $.userNameSecond = decodeURIComponent(
 					$.secondCookie.match(/pt_pin=(.+?);/) && $.secondCookie.match(/pt_pin=(.+?);/)[1],
 				   ); 
-				  await helpFriendTuan($.tuan,$.userNameSecond);
+				  if($.tuan)
+					await helpFriendTuan($.tuan,$.userNameSecond);
 				}
 				await 5000;
 		   }
@@ -77,7 +79,9 @@ function getCookies() {
 
 
 async function helpFriendTuan(body,userNameSecond) {
+	
   return new Promise(resolve => {
+
     const data = {
       "activityIdEncrypted": body['activityIdEncrypted'],
       "assistStartRecordId": body['assistStartRecordId'],
@@ -100,6 +104,11 @@ async function helpFriendTuan(body,userNameSecond) {
               else if (data.resultCode === '9200011') console.log(`【京东账号:${userNameSecond}】助力结果：已经助力过\n`)
               else if (data.resultCode === '2400205') {
 				  console.log(`【京东账号:${userNameSecond}】助力结果：团已满\n`);
+				  $.stop = 1;
+				  $.tuan = null;
+			  }
+			  else if (data.resultCode === '2400201') {
+				  console.log(`【京东账号:${userNameSecond}】活动火爆，跳出\n`);
 				  $.stop = 1;
 				  $.tuan = null;
 			  }
