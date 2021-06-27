@@ -8,7 +8,7 @@
 
   quanx:
   [task_local]
-  0,5,9 0 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js, tag=京东赚京豆嫖助力, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
+  1,10 0,17 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js, tag=京东赚京豆嫖助力, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
   [Script]
   京东赚京豆嫖助力 = type=cron,cronexp=0,5,9 0 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js,
  *
@@ -35,8 +35,12 @@ $.tuan = null;
 	  
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getUserTuanInfo();
-	  await submitInviteId2(userName);
-      await submitInviteId(userName);
+	  if(!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted){
+		  console.log(`\n【京东账号】${userName}开团失败了，没次数了？`);
+	  }else{
+		  await submitInviteId2(userName);
+		  await submitInviteId(userName);
+	  }
 
     }
   }
@@ -67,6 +71,9 @@ console.log('lx池子提交：');
   return new Promise(resolve => {
     if (!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted) {
       resolve();
+	  
+	  console.log(`\n【京东账号${userName}开团失败，团满了吧\n`)
+
       return;
     }
     const code = Object.assign($.tuan, {"time": Date.now()});
@@ -82,7 +89,7 @@ console.log('lx池子提交：');
 				let { body } = resp;
 				body = JSON.parse(body);
 				if (body['code'] === 200) {
-				  console.log(`\n【京东账号${userName}）的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
+				  console.log(`\n【京东账号${userName}的【赚京豆-瓜分京豆】好友互助码2提交成功\n`)
 				} else {
 				  console.log(`【赚京豆-瓜分京豆】邀请码提交失败:${JSON.stringify(body)}\n`)
 				}
@@ -105,8 +112,6 @@ function submitInviteId(userName) {
   return new Promise(resolve => {
     if (!$.tuan || !$.tuan.assistedPinEncrypted || !$.tuan.assistStartRecordId || !$.tuan.activityIdEncrypted) {
       resolve();
-	  	  console.log('咋啦：');
-
       return;
     }
     $.post(
