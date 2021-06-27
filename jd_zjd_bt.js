@@ -47,13 +47,14 @@ $.tuan = null;
 				    $.userNameSecond = decodeURIComponent(
 					$.secondCookie.match(/pt_pin=(.+?);/) && $.secondCookie.match(/pt_pin=(.+?);/)[1],
 				   ); 
+				if($.tuan)
 				  await helpFriendTuan($.tuan,$.userNameSecond);
 				}
 				await 5000;
 		   }
 
 
-      }
+    }
 }
 
 
@@ -100,6 +101,11 @@ async function helpFriendTuan(body,userNameSecond) {
 				  $.stop = 1;
 				  $.tuan = null;
 			  }
+			  else if (data.resultCode === '2400201') {
+				  console.log(`【京东账号:${userNameSecond}】活动火爆，跳出\n`);
+				  $.stop = 1;
+				  $.tuan = null;
+			  }
               else if (data.resultCode === '2400203') {console.log(`【京东账号:${userNameSecond}】助力结果：助力次数已耗尽\n`);}
               else if (data.resultCode === '9000000') {console.log(`【京东账号:${userNameSecond}】助力结果：活动火爆，跳出\n`);}
               else console.log(`助力结果：未知错误\n${JSON.stringify(data)}\n\n`)
@@ -128,7 +134,7 @@ function getUserTuanInfo() {
               activityIdEncrypted: id,
               assistStartRecordId: assistStartRecordId,
               assistedPinEncrypted: encPin,
-	      channel:channel
+	          channel:channel
             };
           } else {
            // createTuan(id);
