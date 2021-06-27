@@ -10,7 +10,7 @@
   [task_local]
   1,10 0,17 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js, tag=京东赚京豆嫖助力, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_syj.png, enabled=true
   [Script]
-  京东赚京豆嫖助力 = type=cron,cronexp=0,5,9 0 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js,
+  京东赚京豆嫖助力 = type=cron,cronexp=1,10 0,17 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_pzl.js,
  *
  *
  **/
