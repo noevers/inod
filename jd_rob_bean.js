@@ -23,6 +23,8 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action?functionId=signBeanGroup
 let shareCode = null;
 let groupCode = null;
 
+const helpNum = 2;// 一个号助力只有2次，需帮助的账号数默认为前2的号，可自行修改 
+
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -44,7 +46,7 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < helpNum; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
