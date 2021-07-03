@@ -6,7 +6,7 @@
 20 8 * * * https://raw.githubusercontent.com/noevers/inod/master/jd_rob_bean.js, tag=抢京豆, enabled=true
 ===========Loon============
 [Script]
-cron "20 8 * * *" script-path=https://raw.githubusercontent.com/noevers/inod/master/jd_rob_bean.js,tag=店铺签到
+cron "20 8 * * *" script-path=https://raw.githubusercontent.com/noevers/inod/master/jd_rob_bean.js,tag=抢京豆
 ============Surge=============
 抢京豆 = type=cron,cronexp="20 8 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/noevers/inod/master/jd_rob_bean.js
 ===========小火箭========
