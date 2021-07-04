@@ -43,10 +43,7 @@ let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [
-  'V5LkjP4WRyjeCKR9VRwcRX0bBuTz7MEK0-E99EJ7u0k=@0WtCMPNq7jekehT6d3AbFw==',
-  "gB99tYLjvPcEFloDgamoBw==@7dluIKQMp0bySgcr8AqFgw==",
-  '-OvElMzqeyeGBWazWYjI1Q==',
-  'GFwo6PntxDHH95ZRzZ5uAg=='
+
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [];
@@ -143,8 +140,8 @@ async function jdDreamFactory() {
     await QueryHireReward();//收取招工电力
     await PickUp();//收取自家的地下零件
     await stealFriend();
-    await tuanActivity();
-    await QueryAllTuan();
+//	await tuanActivity();
+//    await QueryAllTuan();
     await exchangeProNotify();
     await showMsg();
   } catch (e) {
@@ -927,6 +924,8 @@ function getFactoryIdByPin(pin) {
     })
   })
 }
+
+/*
 async function tuanActivity() {
   const tuanConfig = await QueryActiveConfig();
   if (tuanConfig && tuanConfig.ret === 0) {
@@ -971,6 +970,7 @@ async function tuanActivity() {
     }
   }
 }
+
 async function joinLeaderTuan() {
   let res = await updateTuanIdsCDN(), res2 = await updateTuanIdsCDN("http://cdn.annnibb.me/factory.json")
   if (!res) res = await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json');
@@ -985,6 +985,7 @@ async function joinLeaderTuan() {
     }
   }
 }
+
 //可获取开团后的团ID，如果团ID为空并且surplusOpenTuanNum>0，则可继续开团
 //如果团ID不为空，则查询QueryTuan()
 function QueryActiveConfig() {
@@ -1241,6 +1242,8 @@ function updateTuanIdsCDN(url = 'https://raw.githubusercontent.com/gitupdate/upd
   })
 }
 
+*/
+
 //商品可兑换时的通知
 async function exchangeProNotify() {
   await GetShelvesList();
@@ -1304,6 +1307,7 @@ async function showMsg() {
     resolve()
   })
 }
+/*
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
@@ -1328,6 +1332,7 @@ function readShareCode() {
     resolve()
   })
 }
+*/
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
@@ -1335,7 +1340,9 @@ function shareCodesFormat() {
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
-    } else {
+    }
+/*	
+	else {
       console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex].split('@');
@@ -1344,6 +1351,7 @@ function shareCodesFormat() {
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+	*/
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
