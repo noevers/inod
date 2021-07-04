@@ -22,7 +22,7 @@ let cookiesArr = [], cookie = '', message;
 const JD_API_HOST = 'https://api.m.jd.com/client.action?functionId=signBeanGroupStageIndex&body={"monitor_refer":"","rnVersion":"3.9","fp":"-1","shshshfp":"-1","shshshfpa":"-1","referUrl":"-1","userAgent":"-1","jda":"-1","monitor_source":"bean_m_bean_index"}&appid=ld';
 let shareCode = null;
 let groupCode = null;
-
+let activityId = null;
 const helpNum = 2;// 一个号助力只有2次，需帮助的账号数默认为前2的号，可自行修改 
 
 
@@ -52,12 +52,10 @@ if ($.isNode()) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       $.index = i + 1;
       $.isLogin = true;
-      $.nickName = '';
       message = '';
-      await TotalBean();
-      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+      console.log(`\n******开始【京东账号${$.index}】${ $.UserName}*********\n`);
       if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index}  $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
@@ -119,6 +117,7 @@ async function getHelpCode(){
           if (data.code==0) {
 			shareCode = data.data.shareCode;
 			groupCode = data.data.groupCode;
+			activityId = data.data.activityMsg.activityId;
 			console.log(`获取活动组code:${groupCode},分享code:${shareCode}\n`)
           }else{
             console.log(data)
@@ -137,7 +136,7 @@ async function getHelpCode(){
 async function helpFriend(){
   return new Promise(resolve => {
     const options = {
-      url: `https://api.m.jd.com/client.action?functionId=signGroupHelp&body=%7B%22activeType%22%3A2%2C%22groupCode%22%3A%22${groupCode}%22%2C%22shareCode%22%3A%22${shareCode}%22%2C%22activeId%22%3A%22115%22%2C%22source%22%3A%22guest%22%7D&appid=ld`,
+      url: `https://api.m.jd.com/client.action?functionId=signGroupHelp&body=%7B%22activeType%22%3A2%2C%22groupCode%22%3A%22${groupCode}%22%2C%22shareCode%22%3A%22${shareCode}%22%2C%22activeId%22%3A%22${activityId}%22%2C%22source%22%3A%22guest%22%7D&appid=ld`,
       headers: {
         "accept": "*/*",
         "accept-encoding": "gzip, deflate, br",
@@ -174,53 +173,7 @@ async function helpFriend(){
 
 
 
-async function showMsg() {
-  if ($.isNode()) {
-    $.msg($.name, '', `【京东账号${$.index}】${$.nickName}\n${message}`);
-    await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName}\n${message}`);
-  }
-}
 
-function TotalBean() {
-  return new Promise(async resolve => {
-    const options = {
-      "url": `https://wq.jd.com/user/info/QueryJDUserInfo?sceneval=2`,
-      "headers": {
-        "Accept": "application/json,text/plain, */*",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-cn",
-        "Connection": "keep-alive",
-        "Cookie": cookie,
-        "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;10.0.2;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-      }
-    }
-    $.post(options, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (data) {
-            data = JSON.parse(data);
-            if (data['retcode'] === 13) {
-              $.isLogin = false; //cookie过期
-              return
-            }
-            $.nickName = data['base'].nickname;
-          } else {
-            console.log(`京东服务器返回空数据`)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
-}
 
 function jsonParse(str) {
   if (typeof str == "string") {
