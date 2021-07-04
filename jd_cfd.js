@@ -58,11 +58,13 @@ $.appId = 10009;
   }
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
+  /*
   let res = {}, res2 = await getAuthorShareCode("https://raw.githubusercontent.com/gitupdate/updateTeam/master/shareCodes/cfd.json")
   if (new Date().getHours() <= 3) res = await getAuthorShareCode('http://cdn.annnibb.me/cfd.json');
   if (!res2) res2 = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/cfd.json')
   $.strMyShareIds = [...(res && res.shareId || []),...(res2 && res2.shareId || [])]
   $.strGroupIds = [...(res && res.strGroupIds || []),...(res2 && res2.strGroupIds || [])]
+  */
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -104,6 +106,7 @@ $.appId = 10009;
       if (!$.canHelp) break
       await $.wait(1000 * 10)
     }
+	/*
     if (!$.canHelp) continue
     console.log(`\n\n寻宝大作战，助力作者\n`);
     for (let id of $.strGroupIds) {
@@ -112,6 +115,7 @@ $.appId = 10009;
       if (!$.canHelp) break
       await $.wait(1000 * 10)
     }
+	*/
   }
   await showMsg();
 })()
@@ -200,6 +204,7 @@ function helpFriend() {
   })
 }
 
+/*
 function getAuthorShareCode(url) {
   return new Promise(async resolve => {
     const options = {
@@ -232,7 +237,7 @@ function getAuthorShareCode(url) {
     resolve();
   })
 }
-
+*/
 function getUserInfo(showInvite = true) {
   return new Promise(async (resolve) => {
     $.get(taskUrl(`user/QueryUserInfo`), (err, resp, data) => {
@@ -1149,6 +1154,7 @@ function showMsg() {
   });
 }
 
+/*
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
@@ -1176,6 +1182,7 @@ function readShareCode() {
     resolve()
   })
 }
+*/
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
@@ -1183,15 +1190,19 @@ function shareCodesFormat() {
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
-    } else {
+    } 
+	/*
+	else {
       console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       // const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = [...$.strMyShareIds, "F45CB4F07997DFE748E5656521A9034446A1568F6950206B0D44A5664662275D"];
     }
+	
     const readShareCodeRes = await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+	*/
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
