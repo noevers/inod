@@ -14,8 +14,6 @@ TG通知群 https://t.me/ningmeng999
 // #柠檬旺财乐园
 // */5 * * * * 
 
-// 修改与柠檬 https://raw.githubusercontent.com/panghu999/panghu/master/jd_joy-park.js
-
 const $ = new Env('汪汪乐园');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -45,18 +43,20 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
   
   $.shareCodesArr = [];
     if ($.isNode()) {
-      Object.keys(jdJoyParkShareCodes).forEach((item) => {
-        if (jdJoyParkShareCodes[item]) {
-          $.shareCodesArr.push(jdJoyParkShareCodes[item])
+	  let joyParkShareCodes = process.env.JOY_PARKSHARECODES.split('&');
+	  if(joyParkShareCodes&&joyParkShareCodes!=''){
+		Object.keys(joyParkShareCodes).forEach((item) => {
+        if (joyParkShareCodes[item]) {
+          $.shareCodesArr.push(joyParkShareCodes[item])
         }
       })
+	  }
     }
 
 
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      ck2 = cookiesArr[Math.round(Math.random()*3)];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
@@ -75,8 +75,10 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
      
       await shareCodesFormat();
 
-      await joyBaseInfo()
+      await joyBaseInfo();
+	  await 3000;
       await joyList()
+	  await 3000;
       //await joyBuy()
       await tasklist()
 
@@ -99,7 +101,7 @@ function joyBaseInfo() {
 		headers: {
 				"Origin": "https://joypark.jd.com",
 				"Host": "api.m.jd.com",
-				"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 				"Cookie": cookie,
 		  }
     }
@@ -151,7 +153,7 @@ function joyList() {
 		headers: {
 			"Origin": "https://joypark.jd.com",
 			"Host": "api.m.jd.com",
-			"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 			"Cookie": cookie,
 		}
     }
@@ -241,8 +243,9 @@ function joyList() {
 }
 
 function joyMerge(a,b) {
+	
     return new Promise(async (resolve) => {
-
+	await 3000;
     let options = {
 		url: `https://api.m.jd.com/`,
 
@@ -250,7 +253,7 @@ function joyMerge(a,b) {
 			headers: {
 			"Origin": "https://joypark.jd.com",
 			"Host": "api.m.jd.com",
-			"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 			"Cookie": cookie,
 		  }
                 }
@@ -296,7 +299,7 @@ function joyBuy() {
 	headers: {
 	"Origin": "https://joypark.jd.com",
 	"Host": "api.m.jd.com",
-	"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 		  "Cookie": cookie,
       }
                 }
@@ -340,7 +343,7 @@ function tasklist() {
 headers: {
 "Origin": "https://joypark.jd.com",
 "Host": "api.m.jd.com",
-"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       //"Cookie": cookie,
       }
                 }
@@ -404,8 +407,11 @@ headers: {
 							console.log(`格式化后的助力码::${JSON.stringify(newShareCodes)}\n`);
 
 							for (let code of newShareCodes) {
+								
 								 await inviteType(code);
+								 await 3000;
 								 await apTaskinviter(code);
+								 await 3000;
 								 
 								 await openinvite(code)
 							}
@@ -444,7 +450,7 @@ function openinvite(code) {
 		headers: {
 		"Origin": "https://joypark.jd.com",
 		"Host": "api.m.jd.com",
-		"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 			  "Cookie": cookie,
 		}
 					}
@@ -480,9 +486,8 @@ function openinvite(code) {
 	
 }
 
-
-function 
-function inviteType() {
+ 
+function inviteType(code) {
     return new Promise(async (resolve) => {
 
                 let options = {
@@ -492,7 +497,7 @@ function inviteType() {
 	headers: {
 	"Origin": "https://joypark.jd.com",
 	"Host": "api.m.jd.com",
-	"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 		  "Cookie": cookie,
 		  }
 	}
@@ -535,7 +540,7 @@ function levelDrawAward() {
 headers: {
 "Origin": "https://joypark.jd.com",
 "Host": "api.m.jd.com",
-"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       "Cookie": cookie,
       }
                 }
@@ -570,7 +575,7 @@ headers: {
 }
 function dotask(taskType,taskid,itemId) {
     return new Promise(async (resolve) => {
-
+     await 3000;
                 let options = {
     url: `https://api.m.jd.com/`,
 
@@ -578,7 +583,7 @@ function dotask(taskType,taskid,itemId) {
 headers: {
 "Origin": "https://joypark.jd.com",
 "Host": "api.m.jd.com",
-"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       "Cookie": cookie,
       }
                 }
@@ -614,7 +619,7 @@ headers: {
     });
 }
 //functionId=joyBaseInfo&body={"taskId":"167","inviteType":"1","inviterPin":"IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw","linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&_t=1625543629130&appid=activities_platform
-function apTaskinviter() {
+function apTaskinviter(code) {
     return new Promise(async (resolve) => {
 
                 let options = {
@@ -624,7 +629,7 @@ function apTaskinviter() {
 	headers: {
 	"Origin": "https://joypark.jd.com",
 	"Host": "api.m.jd.com",
-	"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 		  "Cookie": cookie,
       }
                 }
@@ -656,7 +661,8 @@ function apTaskinviter() {
 
 function apTaskDrawAward(taskType,taskid) {
     return new Promise(async (resolve) => {
-
+	
+	await 3000;
                 let options = {
     url: `https://api.m.jd.com/`,
 
@@ -664,7 +670,7 @@ function apTaskDrawAward(taskType,taskid) {
 	headers: {
 	"Origin": "https://joypark.jd.com",
 	"Host": "api.m.jd.com",
-	"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
 		  "Cookie": cookie,
       }
                 }
