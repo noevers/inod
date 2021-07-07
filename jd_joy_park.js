@@ -14,6 +14,8 @@ TG通知群 https://t.me/ningmeng999
 // #柠檬旺财乐园
 // */5 * * * * 
 
+// 修改与柠檬 https://raw.githubusercontent.com/panghu999/panghu/master/jd_joy-park.js
+
 const $ = new Env('汪汪乐园');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
