@@ -50,7 +50,7 @@ let randomCount = $.isNode() ? 20 : 5;
       $.isLogin = true;
       $.nickName = '';
       await TotalBean();
-	  $.wait(2000);
+      await $.wait(2000);
 
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       if (!$.isLogin) {
@@ -66,14 +66,14 @@ let randomCount = $.isNode() ? 20 : 5;
       goodsUrl = '';
       taskInfoKey = [];
       option = {};
-	  $.wait(2000);
+	await  $.wait(2000);
 
       await shareCodesFormat();
-	  $.wait(3000);
+      await  $.wait(3000);
       await jdPet();
-	  $.wait(3000);
+      await $.wait(3000);
     }
-	$.wait(10000);
+	await $.wait(2000);
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
@@ -131,23 +131,22 @@ async function jdPet() {
         return
       }
       $.taskInfo = $.taskInit.result;
-	  $.wait(2000);
+	 await $.wait(2000);
 
       await petSport();//遛弯
-	  $.wait(2000);
+	await  $.wait(2000);
 
       await slaveHelp();//助力好友
-	  $.wait(2000);
+	await  $.wait(2000);
 
       await masterHelpInit();//获取助力的信息
-	  $.wait(2000);
-
+	await $.wait(2000);
       await doTask();//做日常任务
-	  $.wait(2000);
+	await  $.wait(2000);
       await feedPetsAgain();//再次投食
-	  $.wait(2000);
+	await $.wait(2000);
       await energyCollect();//收集好感度
-	  $.wait(2000);
+	 await $.wait(2000);
       await showMsg();
       console.log('全部任务完成, 如果帮助到您可以点下🌟STAR鼓励我一下, 明天见~');
     } else if (initPetTownRes.code === '0'){
@@ -210,20 +209,20 @@ async function doTask() {
     if ($.taskInfo[item].finished) {
       console.log(`任务 ${item} 已完成`)
     }
-	$.wait(2000);
+	await $.wait(2000);
 
   }
   //每日签到
   if (signInit && !signInit.finished) {
     await signInitFun();
   }
-  	$.wait(4000);
+  	await $.wait(2000);
 
   // 首次喂食
   if (firstFeedInit && !firstFeedInit.finished) {
     await firstFeedInitFun();
   }
-  	$.wait(4000);
+  	await $.wait(2000);
 
   // 三餐
   if (threeMealInit && !threeMealInit.finished) {
@@ -233,7 +232,7 @@ async function doTask() {
       await threeMealInitFun();
     }
   }
-  	$.wait(4000);
+  	await $.wait(2000);
 
   if (browseShopsInit && !browseShopsInit.finished) {
     await browseShopsInitFun();
@@ -244,14 +243,14 @@ async function doTask() {
       browseSingleShopInitList.push(item);
     }
   });
-  	$.wait(4000);
+  	await $.wait(2000);
 
   // 去逛逛好货会场
   for (let item of browseSingleShopInitList) {
     const browseSingleShopInitTask = $.taskInfo[item];
     if (browseSingleShopInitTask && !browseSingleShopInitTask.finished) {
       await browseSingleShopInit(browseSingleShopInitTask);
-	  	$.wait(4000);
+	 await $.wait(2000);
 
     }
 
@@ -259,7 +258,7 @@ async function doTask() {
   if (inviteFriendsInit && !inviteFriendsInit.finished) {
     await inviteFriendsInitFun();
   }
-  	$.wait(4000);
+  	await $.wait(2000);
 
   // 投食10次
   if (feedReachInit && !feedReachInit.finished) {
@@ -333,7 +332,7 @@ async function slaveHelp() {
     } else {
       console.log(`助力好友结果: ${response.message}`);
     }
-	$.wait(2000);
+	await $.wait(2000);
   }
   if (helpPeoples && helpPeoples.length > 0) {
     message += `【您助力的好友】${helpPeoples.substr(0, helpPeoples.length - 1)}\n`;
@@ -354,7 +353,7 @@ async function petSport() {
       console.log(`领取遛狗奖励完成: ${JSON.stringify(sportRevardResult)}`);
     }
     times++;
-	$.wait(2000);
+	await $.wait(2000);
 
   } while (resultCode == 0 && code == 0)
   if (times > 1) {
@@ -423,7 +422,7 @@ async function browseShopsInitFun() {
     code = response.code;
     resultCode = response.resultCode;
     times++;
-	$.wait(2000);
+	await $.wait(2000);
 
   } while (resultCode == 0 && code == 0 && times < 5)
   console.log('浏览店铺任务结束');
@@ -466,7 +465,7 @@ async function feedReachInitFun() {
       needFeedTimes = 0;
     }
     tryTimes--;
-	$.wait(2000);
+	await $.wait(2000);
 
   } while (needFeedTimes > 0 && tryTimes > 0)
   console.log('投食任务结束...\n');
