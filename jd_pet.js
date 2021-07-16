@@ -1,6 +1,6 @@
 /*
 东东萌宠 更新地址： https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js
-更新时间：2021-07-11
+更新时间：2021-07-16
 活动入口：京东APP我的-更多工具-东东萌宠
 已支持IOS多京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
@@ -33,17 +33,49 @@ let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好�
 ]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
-const JD_API_HOST = 'https://api.m.jd.com/client.action';
+let JD_API_HOST = 'https://api.m.jd.com/client.action';
 let goodsUrl = '', taskInfoKey = [];
 let randomCount = $.isNode() ? 20 : 5;
+
+const dns = require('dns');
+
+// 请求
+async function getIpAddress() {
+  await $.wait(3000); 
+  
+    return new Promise((resolve, reject) => {
+	dns.lookup('api.m.jd.com', function(err, address, family){
+      try {
+		  if(err) {
+			  console.log('\n东东萌宠:获取IP失败 ‼️‼️');
+			  console.log(JSON.stringify(err));
+			  $.logErr(err);
+		  }
+		  if(address){
+			console.log('获取服务器IP: ' + address);
+		    JD_API_HOST = `https://${address}/client.action`;
+		    console.log('请求地址: ' + JD_API_HOST);
+		  }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(address)
+      }
+    })
+  })
+}
 !(async () => {
+	
+  //console.log(JD_API_HOST);
   await requireConfig();
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
+  for (let i = 0; i <  cookiesArr.length; i++) {
     if (cookiesArr[i]) {
+	  await getIpAddress();
+
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
@@ -73,7 +105,7 @@ let randomCount = $.isNode() ? 20 : 5;
       await jdPet();
       await $.wait(3000);
     }
-	await $.wait(60000);
+	await $.wait(3000);
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
