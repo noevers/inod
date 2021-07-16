@@ -73,7 +73,7 @@ let randomCount = $.isNode() ? 20 : 5;
       await jdPet();
       await $.wait(3000);
     }
-	await $.wait(2000);
+	await $.wait(60000);
   }
   if ($.isNode() && allMessage && $.ctrTemp) {
     await notify.sendNotify(`${$.name}`, `${allMessage}`)
