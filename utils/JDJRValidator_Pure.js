@@ -33,6 +33,36 @@ let signFlag = false
 let successNum = 0
 let errorNum = 0
 let JD_API_HOST = 'https://jdjoy.jd.com'
+
+const dns = require('dns');
+
+// 请求
+async function getIpAddress() {
+  await $.wait(3000); 
+  
+    return new Promise((resolve, reject) => {
+	dns.lookup('api.m.jd.com', function(err, address, family){
+      try {
+		  if(err) {
+			  console.log('\n签到:获取IP失败 ‼️‼️');
+			  console.log(JSON.stringify(err));
+			  $.logErr(err);
+		  }
+		  if(address){
+			console.log('获取服务器IP: ' + address);
+		    JD_API_HOST = `https://${address}/client.action`;
+		    console.log('请求地址: ' + JD_API_HOST);
+		  }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(address)
+      }
+    })
+  })
+}
+
+
 if(process.env.JOY_HOST){
   JD_API_HOST = process.env.JOY_HOST
 }
@@ -58,6 +88,7 @@ $.post = validator.injectToRequest($.post.bind($), 'channelSign', $.UA)
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
+      await getIpAddress();
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
       $.index = i + 1;
