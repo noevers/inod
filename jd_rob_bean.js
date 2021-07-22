@@ -62,6 +62,9 @@ if ($.isNode()) {
         }
         continue
       }
+	  await getHelpCodeBefore();
+	  await $.wait(2000);
+
       await getHelpCode();
 	  
 	  if(shareCode!=null&&groupCode!=null){
@@ -72,7 +75,7 @@ if ($.isNode()) {
 			  $.UserNameSecond = decodeURIComponent(cookieSceond.match(/pt_pin=(.+?);/) && cookieSceond.match(/pt_pin=(.+?);/)[1])
 			  
 			  await helpFriend();
-			  await 3000;
+        	  await $.wait(2000);
 			  
 			}
 		  }
@@ -122,6 +125,42 @@ async function getHelpCode(){
           }else{
             console.log(data)
           }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+
+async function getHelpCodeBefore(){
+  return new Promise(resolve => {
+    const options = {
+      url: `https://api.m.jd.com/client.action?functionId=signGroupHit&body=%7B%22activeType%22%3A2%7D&appid=ld`,
+      headers: {
+        "accept": "*/*",
+        "accept-encoding": "gzip, deflate, br",
+        "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+        "cookie": cookie,
+		"X-Requested-With": "com.jingdong.app.mall",
+        "referer": 'https://api.m.jd.com/',
+        'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;10.0.2;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+		}
+    }
+    $.get(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
+          $.logErr(err);
+        } else {
+		  data = JSON.parse(data)
+
+          if (data.code==0) {
+			 console.log(`开团成功\n`)
+		  }
         }
       } catch (e) {
         $.logErr(e, resp);
