@@ -96,6 +96,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
       if ($.max) continue
       if (!$.canHelp) break
     }
+    /*
     if ($.canHelp) {
       console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
       for (let item of $.authorMyShareIds) {
@@ -107,6 +108,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
         if (!$.canHelp) break
       }
     }
+    */
   }
   //拆红包
   for (let i = 0; i < cookiesArr.length; i++) {
