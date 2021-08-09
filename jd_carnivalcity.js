@@ -47,7 +47,7 @@ if ($.isNode()) {
 }
 let inviteCodes = [];
 const JD_API_HOST = 'https://carnivalcity.m.jd.com';
-const activeEndTime = '2021/06/21 00:00:00+08:00';//活动结束时间
+const activeEndTime = '2021/08/28 00:00:00+08:00';//活动结束时间
 let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
 !(async () => {
   if (!cookiesArr[0]) {
@@ -565,7 +565,7 @@ async function doHelp() {
   }
 }
 //助力API
-function toHelp(code = "7c4deed4-2a26-4fa1-bb27-8421f02f30a6") {
+function toHelp(code) {
   return new Promise(resolve => {
     const body = "shareId=" + code;
     const options = taskPostUrl('/khc/task/doSupport', body)
@@ -772,7 +772,8 @@ function shareCodesFormat() {
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
-    } else {
+    }/*
+    else {
       console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       const tempIndex = $.index > inviteCodes.length ? (inviteCodes.length - 1) : ($.index - 1);
       $.newShareCodes = inviteCodes[tempIndex] && inviteCodes[tempIndex].split('@') || [];
@@ -782,6 +783,7 @@ function shareCodesFormat() {
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.newShareCodes, ...(readShareCodeRes.data || [])])];
     }
+    */
     // console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
