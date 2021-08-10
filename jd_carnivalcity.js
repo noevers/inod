@@ -84,6 +84,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       await JD818();
     }
   }
+  /* 屏蔽助力
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -107,6 +108,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       }
     }
   }
+  */
   // console.log(JSON.stringify($.temp))
   if (allMessage) {
     if ($.isNode()) {
