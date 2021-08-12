@@ -1270,7 +1270,7 @@ function JingDongStore(s) {
         url: 'https://api.m.jd.com/api?appid=jdsupermarket&functionId=smtg_sign&clientVersion=8.0.0&client=m&body=%7B%7D',
         headers: {
           Cookie: KEY,
-          Origin: `https://jdsupermarket.jd.com`
+          Origin: 'https://jdsupermarket.jd.com'
         }
       }, (error, response, data) => {
         try {
