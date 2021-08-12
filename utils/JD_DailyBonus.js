@@ -45,7 +45,7 @@ async function all() {
     case 0:
       await Promise.all([
         JingDongBean(stop), //京东京豆
-        JingDongStore(stop), //京东超市
+        //JingDongStore(stop), //京东超市
         JingRongSteel(stop), //金融钢镚
         JingDongTurn(stop), //京东转盘
         JDFlashSale(stop), //京东闪购
