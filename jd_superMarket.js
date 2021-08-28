@@ -21,7 +21,7 @@ const $ = new Env('东东超市');
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', jdSuperMarketShareArr = [], notify, newShareCodes;
-let helpAu = true;//给作者助力 免费拿,极速版拆红包,省钱大赢家等活动.默认true是,false不助力.
+let helpAu = false;//给作者助力 免费拿,极速版拆红包,省钱大赢家等活动.默认true是,false不助力.
 helpAu = $.isNode() ? (process.env.HELP_AUTHOR ? process.env.HELP_AUTHOR === 'true' : helpAu) : helpAu;
 let jdNotify = true;//用来是否关闭弹窗通知，true表示关闭，false表示开启。
 let superMarketUpgrade = true;//自动升级,顺序:解锁升级商品、升级货架,true表示自动升级,false表示关闭自动升级
@@ -96,9 +96,6 @@ async function jdSuperMarket() {
     await smtgHome();
     await receiveUserUpgradeBlue();
     await Home();
-    if (helpAu === true) {
-      await helpAuthor();
-    }
   } catch (e) {
     $.logErr(e)
   }
@@ -202,6 +199,12 @@ async function doDailyTask() {
       if ((item.type === 8 || item.type === 2 || item.type === 10) && item.taskStatus === 0) {
         // await doDailyTask();
       }
+	  if (item.type === 12 && item.taskStatus === 0) {
+			console.log('加购物车')
+          const itemId = item.content[item.type].itemId;
+          const res = await smtgDoShopTask(item.taskId, itemId);
+          console.log(`${item.subTitle}结果${JSON.stringify(res)}`);
+      }
     }
   }
 }
@@ -218,7 +221,7 @@ async function receiveLimitProductBlueCoin() {
 function receiveBlueCoin(timeout = 0) {
   return new Promise((resolve) => {
     setTimeout( ()=>{
-      $.get(taskUrl('smtg_receiveCoin', {"type": 2, "channel": "18"}), async (err, resp, data) => {
+      $.get(taskUrl('smtg_receiveCoin', {"type": 4, "channel": "18"}), async (err, resp, data) => {
         try {
           if (err) {
             console.log('\n东东超市: API查询请求失败 ‼️‼️')
@@ -233,9 +236,9 @@ function receiveBlueCoin(timeout = 0) {
               return
             }
             if  ($.data.data.bizCode === 0) {
-              $.coincount += $.data.data.result.receivedBlue;
+              $.coincount += $.data.data.result.receivedTurnover;
               $.blueCionTimes ++;
-              console.log(`【京东账号${$.index}】${$.nickName} 第${$.blueCionTimes}次领蓝币成功，获得${$.data.data.result.receivedBlue}个\n`)
+              console.log(`【京东账号${$.index}】${$.nickName} 第${$.blueCionTimes}次领蓝币成功，获得${$.data.data.result.receivedTurnover}个\n`)
               if (!$.data.data.result.isNextReceived) {
                 message += `【收取小费】${$.coincount}个\n`;
                 return
