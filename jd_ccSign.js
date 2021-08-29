@@ -157,11 +157,11 @@ function getSign(functionid, body, uuid) {
       "client":"android",
       "clientVersion":clientVersion
     }
-    let options = {
-      url: `https://jdsign.cf/ddo`,
+      let options = {
+      url: `https://cdn.jdsign.cf/ddo`,
       body: JSON.stringify(data),
       headers: {
-        "Host": "jdsign.tk",
+        "Host": "jdsign.cf",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }
     }
