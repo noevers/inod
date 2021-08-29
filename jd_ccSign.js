@@ -157,7 +157,7 @@ function getSign(functionid, body, uuid) {
       "client":"android",
       "clientVersion":clientVersion
     }
-      let options = {
+ let options = {
       url: `https://cdn.jdsign.cf/ddo`,
       body: JSON.stringify(data),
       headers: {
