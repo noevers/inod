@@ -446,7 +446,7 @@ function getSign(functionid, body, uuid) {
     let HostArr = ['jdsign.cf', 'jdsign.tk']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
-      url: `https://cdn.jdsign.cf/ddo`,
+      url: `https://cdn.nz.lu/ddo`,
       body: JSON.stringify(data),
       headers: {
         Host,
