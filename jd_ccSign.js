@@ -160,7 +160,7 @@ function getSign(functionid, body, uuid) {
       "client":"android",
       "clientVersion":"10.1.2"
     }
-    let HostArr = ['jdsign.cf', 'signer.nz.lu']
+    let HostArr = ['signer.nz.lu']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
       url: `https://cdn.nz.lu/ddo`,
@@ -192,7 +192,7 @@ function getsecretPin(pin) {
     let data = {
       "pt_pin": pin
     }
-    let HostArr = ['jdsign.cf', 'signer.nz.lu']
+    let HostArr = ['signer.nz.lu']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
       url: `https://cdn.nz.lu/pin`,
