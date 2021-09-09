@@ -1,7 +1,7 @@
 /**
 心相印-古蜀寻宝“心”旅途
 参加活动需要入会
-cron 12 8,16 1-30 9,10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xxy.js
+cron 5 8,16 1-30 9,10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xxy.js
 账号1助力作者，其余助力账号1
  **/
 const $ = new Env('古蜀寻宝“心”旅途');
