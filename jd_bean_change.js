@@ -101,13 +101,6 @@ if($.isNode()){
             }
         }
     }
-    if($.isNode()){
-        if((cookiesArr.length - ($.sentNum * $.sendNum)) < $.sendNum){
-            console.log(`正在进行最后一次发送通知，发送数量：${(cookiesArr.length - ($.sentNum * $.sendNum))}`)
-            await notify.sendNotify(`${$.name}`, `${message}`)
-            message = "";
-        }
-    }
 })().catch((e) => {
     $.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
 }).finally(() => {
