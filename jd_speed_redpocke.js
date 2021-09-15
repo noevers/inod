@@ -219,6 +219,7 @@ function getPacketList() {
                   console.log(`去提现${item.amount}微信现金`)
                   message += `提现${item.amount}微信现金，`
                   await cashOut(item.id,item.poolBaseId,item.prizeGroupId,item.prizeBaseId)
+                  await $.wait(3000);
                 }
               }
             } else {
