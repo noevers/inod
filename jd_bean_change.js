@@ -39,7 +39,7 @@ $.yestodayExpenditure = 0
 $.beanCount = 0;
 $.beanFlag = true;
 $.jdName = ``
-$.sendNum = process.env.JD_BEAN_CHANGE_SENDNUM * 1 || 20
+$.sendNum = process.env.JD_BEAN_CHANGE_SENDNUM * 1 || 2
 $.sentNum = 0;
 if($.isNode()){
     Object.keys(jdCookieNode).forEach((item) => {cookiesArr.push(jdCookieNode[item]);});
@@ -97,12 +97,15 @@ if($.isNode()){
                     console.log(`正在进行第 ${$.sentNum} 次发送通知，发送数量：${$.sendNum}`)
                     await notify.sendNotify(`${$.name}`, `${message}`)
                     message = "";
-                } else if((cookiesArr.length - ($.sentNum * $.sendNum)) < $.sendNum){
-                    console.log(`正在进行最后一次发送通知，发送数量：${(cookiesArr.length - ($.sentNum * $.sendNum))}`)
-                    await notify.sendNotify(`${$.name}`, `${message}`)
-                    message = "";
                 }
             }
+        }
+    }
+    if($.isNode()){
+        if((cookiesArr.length - ($.sentNum * $.sendNum)) < $.sendNum){
+            console.log(`正在进行最后一次发送通知，发送数量：${(cookiesArr.length - ($.sentNum * $.sendNum))}`)
+            await notify.sendNotify(`${$.name}`, `${message}`)
+            message = "";
         }
     }
 })().catch((e) => {
