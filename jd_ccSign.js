@@ -160,7 +160,7 @@ function getSign(functionid, body, uuid) {
       "client":"android",
       "clientVersion":"10.1.2"
     }
-    let HostArr = ['signer.nz.lu']
+    let HostArr = ['jdsign.cf', 'signer.nz.lu']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
       url: `https://cdn.nz.lu/ddo`,
@@ -169,7 +169,7 @@ function getSign(functionid, body, uuid) {
         Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       },
-      timeout: 15000
+      timeout: 30 * 1000
     }
     $.post(options, (err, resp, data) => {
       try {
@@ -192,7 +192,7 @@ function getsecretPin(pin) {
     let data = {
       "pt_pin": pin
     }
-    let HostArr = ['signer.nz.lu']
+    let HostArr = ['jdsign.cf', 'signer.nz.lu']   
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
       url: `https://cdn.nz.lu/pin`,
@@ -201,13 +201,13 @@ function getsecretPin(pin) {
         Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       },
-      timeout: 15000
+      timeout: 30 * 1000
     }
     $.post(options, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} getSign API请求失败，请检查网路重试`)
+          console.log(`${$.name} getsecretPin API请求失败，请检查网路重试`)
         } else {
 
         }
