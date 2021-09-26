@@ -4,7 +4,7 @@
 更新时间：2021-8-10
 活动入口：京喜APP-我的-京喜财富岛
 
-cron "5 0,23 * * *" jd_cfd_loop.js
+cron 5 6,18 * * * jd_cfd_loop.js
 
 */
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
