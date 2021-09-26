@@ -6,7 +6,7 @@ const $ = new Env('京东价格保护');
 let jsdom = '';
 try{
     jsdom = require("jsdom");
-}catch {console.log(`缺少jsdom模块。请进入容器后执行：npm install -g jsdom`); return;}finally{}
+}catch {console.log(`缺少jsdom模块。请进入容器后执行：pnpm i  png-js -S `); return;}finally{}
 jsdom = require("jsdom");
 const {
 	JSDOM
