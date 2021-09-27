@@ -212,6 +212,10 @@ async function doTask2(batchId) {
       await $.wait(2000);
     }
   }
+  if ($.signTask['taskStatus'] === 1) {
+    const body = {"taskId": $.signTask['taskId'], "itemId": $.signTask['taskItemInfo']['itemId'], "type": $.signTask['taskType'], batchId};
+    await goldCreatorDoTask(body);
+  }
 }
 function goldCreatorDoTask(body) {
   return new Promise(resolve => {
