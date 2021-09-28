@@ -44,6 +44,7 @@ const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%2
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const isKt =  process.env.JX_GCKT ? process.env.JX_GCKT : false;
 $.tuanIds = [];
 $.appId = 10001;
 if ($.isNode()) {
@@ -61,6 +62,11 @@ if ($.isNode()) {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
+  }
+  if(isKt){
+	  console.log("默认第一个账号开团")
+  }else{
+	  console.log("默认不开团")
   }
   await requestAlgo();
   await getActiveId();//自动获取每期拼团活动ID
@@ -91,7 +97,7 @@ if ($.isNode()) {
       await jdDreamFactory()
     }
   }
-  if (tuanActiveId) {
+  if (tuanActiveId && isKt) {
     for (let i = 0; i < cookiesArr.length; i++) {
       if (cookiesArr[i]) {
         cookie = cookiesArr[i];
@@ -136,10 +142,13 @@ async function jdDreamFactory() {
     await QueryHireReward();//收取招工电力
     await PickUp();//收取自家的地下零件
     await stealFriend();
-    if (tuanActiveId) {
-      await tuanActivity();
+    if (tuanActiveId && isKt) {
+	  console.log("默认第一个账号开团")
+	  if($.index==1) await tuanActivity();
       await QueryAllTuan();
-    }
+    }else{
+		console.log("默认不开团")
+	}
     await exchangeProNotify();
     await showMsg();
   } catch (e) {
