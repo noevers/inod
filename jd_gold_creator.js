@@ -164,6 +164,7 @@ function goldCreatorDetail(groupId, subTitleId, taskId, batchId, flag = false) {
               $.remainVotes = data.result.remainVotes || 0;
               $.skuList = data.result.skuList || [];
               $.taskList = data.result.taskList || [];
+              $.signTask = data.result.signTask
               if (flag) {
                 await doTask2(batchId);
               } else {
