@@ -80,6 +80,7 @@ async function main() {
   try {
     await goldCreatorTab();//获取顶部主题
     await getDetail();
+    await goldCreatorPublish();
     await showMsg();
   } catch (e) {
     $.logErr(e)
@@ -249,6 +250,35 @@ function goldCreatorDoTask(body) {
     })
   })
 }
+
+function goldCreatorPublish() {
+  return new Promise(resolve => {
+    $.get(taskUrl('goldCreatorPublish'), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} goldCreatorPublish API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data)
+            if (data.code === '0') {
+              if (data.result.subCode === '0') {
+                console.log(data.result.lotteryResult.lotteryCode === '0' ? `揭榜成功：获得${data.result.lotteryResult.lotteryScore}京豆` : `揭榜成功：获得空气~`)
+              }
+            } else {
+              console.log(`揭榜失败：${JSON.stringify(data)}`)
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
 function taskUrl(function_id, body = {}) {
   return {
     url: `${JD_API_HOST}?functionId=${function_id}&body=${escape(JSON.stringify(body))}&appid=content_ecology&clientVersion=10.0.0&client=wh5&eufv=false&uuid=`,
