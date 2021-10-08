@@ -47,6 +47,13 @@ let jdJoyStealCoin = true;//是否偷好友积分与狗粮，false为否，true�
 let JD_API_HOST = 'https://jdjoy.jd.com'
 $.invokeKey = 'JL1VTNRadM68cIMQ'
 let lkt = 0
+
+let strdom = '';
+try{
+    strdom = require("string-random");
+}catch {console.log(`缺少jsdom模块。请进入容器后执行：pnpm i  string-random -S `); return;}finally{}
+
+
 if(process.env.JOY_HOST){
   JD_API_HOST = process.env.JOY_HOST
 }
@@ -89,10 +96,12 @@ $.post=validator.injectToRequest2($.post.bind($))
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       lkt = new Date().getTime()
       getUA()
+	  console.log($.UA)
       message = '';
       subTitle = '';
       await jdJoySteal();
       await showMsg();
+	  await $.wait(30000)
     }
   }
 })()
@@ -287,7 +296,6 @@ function getFriends(currentPage = '1') {
       url,
       headers: {
         'Cookie': cookie,
-        'reqSource': 'h5',
         'Host': 'jdjoy.jd.com',
         'Connection': 'keep-alive',
         'Content-Type': 'application/json',
@@ -296,8 +304,13 @@ function getFriends(currentPage = '1') {
         "User-Agent": $.UA,
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
+		"Accept": "*/*",
         "lks": $.md5(""+$.invokeKey+lkt),
-        "lkt": lkt
+        "lkt": lkt,
+		"X-Requested-With": "com.jingdong.app.mall",
+		"Sec-Fetch-Site": "same-site",
+		"Sec-Fetch-Mode": "cors"
+
       },
       timeout: 10000
     }
@@ -580,7 +593,7 @@ function jsonParse(str) {
 }
 
 function getUA(){
-  $.UA = `jdapp;iPhone;10.1.0;14.3;${randomString(40)};network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167774;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
+  $.UA = `jdapp;iPhone;10.1.${strdom(1,{ letters: false})};14.5;${randomString(40)};network/wifi;model/iPhone13,1;addressid/${strdom(10,{ letters: false})};appBuild/1${strdom(6,{ letters: false})};jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15F${strdom(3,{ letters: false})};supportJDSHWK/1`
 }
 function randomString(e) {
   e = e || 32;
