@@ -47,12 +47,7 @@ let allMessage = '';
     return;
   }
   await requireConfig()
-  $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateCash.json')
-  if (!$.authorCode) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
-  }
+  
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -443,13 +438,13 @@ function getSign(functionid, body, uuid) {
       "client":"apple",
       "clientVersion":"10.1.0"
     }
-    let HostArr = ['jdsign.cf', 'signer.nz.lu']
-    let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
+    let Host = "sign.666889.xyz"
     let options = {
-      url: `https://cdn.nz.lu/ddo`,
+      url: `https://sign.666889.xyz/getCCSign`,
       body: JSON.stringify(data),
       headers: {
         Host,
+		"Content-Type": "application/json;charset=UTF-8",
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       },
       timeout: 30 * 1000
