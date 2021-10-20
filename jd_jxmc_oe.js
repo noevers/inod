@@ -1,6 +1,23 @@
-/**
- 惊喜牧场
- cron 23 0-23/3 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_jxmc.js
+/*
+京喜牧场
+更新时间：2021-10-20
+活动入口：京喜APP-我的-京喜牧场
+温馨提示：请先手动完成【新手指导任务】再运行脚本
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#京喜牧场
+20 0-23/3 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, tag=京喜牧场, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+
+================Loon==============
+[Script]
+cron "20 0-23/3 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js,tag=京喜牧场
+
+===============Surge=================
+京喜牧场 = type=cron,cronexp="20 0-23/3 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js
+
+============小火箭=========
+京喜牧场 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, cronexpr="20 0-23/3 * * *", timeout=3600, enable=true
  */
 // prettier-ignore
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
