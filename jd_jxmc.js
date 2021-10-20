@@ -33,6 +33,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //惊喜APP的UA。领取助力任务奖励需要惊喜APP的UA,环境变量：JX_USER_AGENT，有能力的可以填上自己的UA
 const JXUserAgent =  $.isNode() ? (process.env.JX_USER_AGENT ? process.env.JX_USER_AGENT : ``):``;
 $.inviteCodeList = [];
+$.inviteCodeList = [];
 let cookiesArr = [];
 $.appId = 10028;
 $.helpCkList = [];
@@ -96,6 +97,24 @@ $.activeid = '';
             }
         }
     }
+  
+  console.log('\n##################开始账号内互助(红包)#################\n');
+  for(let i = 0;i<$.helpCkList.length;i++){
+    $.can_help = true
+    $.cookie = $.helpCkList[i]
+    token = await getJxToken()
+    $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
+    for (let j = 0; j < $.inviteCodeList_hb.length && $.can_help; j++) {
+      $.oneCodeInfo = $.inviteCodeList_hb[j]
+      if($.oneCodeInfo.use === $.UserName){
+        continue
+      }
+      console.log(`\n${$.UserName}去助力${$.oneCodeInfo.use},助力码：${$.oneCodeInfo.code}\n`);
+      await takeGetRequest('help_hb');
+      await $.wait(2000);
+    }
+  }
+  
 })()
     .catch((e) => {
         $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -142,6 +161,9 @@ async function pasture() {
         }
     }
     $.crowInfo = $.homeInfo.cow;
+      
+    await takeGetRequest('GetInviteStatus');
+      
     $.GetVisitBackInfo = {};
     await $.wait(1000);
     await takeGetRequest('GetVisitBackInfo');
@@ -404,6 +426,16 @@ async function takeGetRequest(type) {
             url += `&jxmc_jstoken=${token.farm_jstoken}&timestamp=${token.timestamp}&phoneid=${token.phoneid}`
             url += `&_stk=activeid%2Cactivekey%2Cchannel%2Cjxmc_jstoken%2Cphoneid%2Csceneid%2Ctimestamp&_ste=1`;
             break;
+        case 'GetInviteStatus':
+            url = `https://m.jingxi.com/jxmc/operservice/GetInviteStatus?channel=7&sceneid=1001&activeid=jxmc_active_0001&activekey=null&jxmc_jstoken=${token.farm_jstoken}&timestamp=${token.timestamp}&phoneid=${token.phoneid}`;
+            // url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
+            break;
+        case 'help_hb':
+            url = `https://m.jingxi.com/jxmc/operservice/InviteEnroll?channel=7&sceneid=1001&activeid=jxmc_active_0001&activekey=null&sharekey=${$.oneCodeInfo.code}`
+            url += `&jxmc_jstoken=${token.farm_jstoken}&timestamp=${token.timestamp}&phoneid=${token.phoneid}`;
+            url += `&_stk=activeid%2Cactivekey%2Cchannel%2Cjxmc_jstoken%2Cphoneid%2Csceneid%2Csharekey%2Ctimestamp&_ste=1`;
+            // url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&g_ty=ls`;
+            break;
         default:
             console.log(`错误${type}`);
     }
@@ -573,6 +605,23 @@ function dealReturn(type, data) {
             }else{
                 console.log(JSON.stringify(data));
             }
+            break;
+         case 'GetInviteStatus':
+            if (data.ret === 0) {
+                if(data.data.sharekey){
+                    console.log(`红包邀请码:${data.data.sharekey}`);
+                    $.inviteCodeList_hb.push({'use':$.UserName,'code':data.data.sharekey,'max':false});
+                }
+            } else {
+                console.log(`异常：${JSON.stringify(data)}\n`);
+            }
+            break;
+        case 'help_hb':
+            if (data.ret == 2711) {
+              console.log(`无助力次数`)
+              $.can_help = false
+            }
+            console.log(`红包助力：${JSON.stringify(data)}\n`);
             break;
         default:
             console.log(JSON.stringify(data));
