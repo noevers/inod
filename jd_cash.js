@@ -438,9 +438,9 @@ function getSign(functionid, body, uuid) {
       "client":"apple",
       "clientVersion":"10.1.0"
     }
-    let Host = "sign.666889.xyz"
+    let Host = "sign.jdhost.cf"
     let options = {
-      url: `https://sign.666889.xyz/getCCSign`,
+      url: `https://sign.jdhost.cf/getCCSign`,
       body: JSON.stringify(data),
       headers: {
         Host,
