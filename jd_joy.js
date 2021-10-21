@@ -130,7 +130,15 @@ async function deskGoodsTask() {
       if (taskChance === followCount) return
       for (let item of deskGoods) {
         if (!item['status'] && item['sku']) {
-          await followScan(item['sku'])
+          //await followScan(item['sku'])
+		  const body = {
+            "taskType": 'ScanDeskGood',
+            "sku": item['sku']
+          };
+		  await doScanMarket('follow_good_desk', item['sku']);
+          await $.wait(6000)
+          const scanMarketRes = await scanMarket('scan', body);
+          console.log(`100积分奖励任务-${item['skuName']}浏览结果::${JSON.stringify(scanMarketRes)}`)
         }
       }
     } else {
