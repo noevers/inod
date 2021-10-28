@@ -4,7 +4,7 @@ ck1助力 作者
 其余助力ck1
 https://u.jd.com/3C7eCOr
 跳转到app 可查看助力情况
-1 0,12,18 * * * gua_1111RedEnvelope.js
+1 0,12,18 * * * jd_1111.js
 */
 
 const $ = new Env('双十一无门槛红包🧧');
@@ -83,10 +83,7 @@ async function run(){
       }
       $.actId = $.url2.match(/mall\/active\/([^/]+)\/index\.html/) && $.url2.match(/mall\/active\/([^/]+)\/index\.html/)[1] || '2GdKXzvywVytLvcJTk2K3pLtDEHq'
       let arr = await Faker.getBody($.UA,$.url2)
-	  console.log(arr)
       await getEid(arr)
-	  	  console.log($.eid)
-
       if(!$.eid){
         $.eid = -1
       }
@@ -278,11 +275,7 @@ function getEid(arr) {
         "User-Agent": $.UA
       }
     }
-		  	  console.log(options)
-
     $.post(options, async (err, resp, data) => {
-			  	  console.log(data)
-
       try {
         if (err) {
           console.log(`\n${turnTableId[i].name} 登录: API查询请求失败 ‼️‼️`)
