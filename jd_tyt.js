@@ -1,12 +1,22 @@
 /*
-入口 极速版 赚金币 
-分享到QQ查看邀请码 packetId就是
-#自定义变量
-export tytpacketId=""
- [task_local]
-#柠檬推一推
-0 0 * * * http://nm66.top/jd_tyt.js, tag=柠檬推一推, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
-*/
+活动入口： 京东极速版-我的-推推赚大钱
+已支持IOS双京东账号, Node.js支持N个京东账号
+脚本兼容: QuantumultX, Surge, Loon, 小火箭，JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#推推赚大钱
+0 12 * * * jd_tyt.js, tag=推推赚大钱, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+
+================Loon==============
+[Script]
+cron "0 12 * * *" script-path=jd_tyt.js tag=推推赚大钱
+
+===============Surge=================
+推推赚大钱 = type=cron,cronexp="0 12 * * *",wake-system=1,timeout=3600,script-path=jd_tyt.js
+
+============小火箭=========
+推推赚大钱 = type=cron,script-path=jd_tyt.js, cronexpr="0 12 * * *", timeout=3600, enable=true
+ */
 const $ = new Env('推推赚大钱');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -33,6 +43,9 @@ if ($.isNode()) {
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 
 !(async() => {
+    console.log('助力码获取：每日手动打开活动，分享到qq，提取链接内助力码')
+    console.log('环境变量添加：环境变量：export tytpacketId=""')
+    console.log('请自行添加环境变量，账号太少的可以禁用"')
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {
             "open-url": "https://bean.m.jd.com/bean/signIndex.action"
