@@ -40,7 +40,11 @@ var KEY = '';
 const Faker = require('./JDSignValidator')
 const zooFaker = require('./JDJRValidator_Pure')
 let fp = '', eid = '', md5
-
+let invoke_key = 'q8DNJdpcfRQ69gIx';
+try{
+  let hConfig = require('./HConfig.js')
+  invoke_key = hConfig.invokeKey
+}catch(e){}
 $nobyda.get = zooFaker.injectToRequest2($nobyda.get.bind($nobyda), 'channelSign')
 $nobyda.post = zooFaker.injectToRequest2($nobyda.post.bind($nobyda), 'channelSign')
 
@@ -754,9 +758,9 @@ function JDUserSign1(s, key, title, body) {
 async function JDUserSign2(s, key, title, tid, acData) {
   await new Promise(resolve => {
     let lkt = new Date().getTime()
-    let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+    let lks = md5('' + invoke_key + lkt).toString()
     $nobyda.get({
-      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=JL1VTNRadM68cIMQ`,
+      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=${invoke_key}`,
       headers: {
         Cookie: KEY,
         'lkt': lkt,
@@ -769,7 +773,7 @@ async function JDUserSign2(s, key, title, tid, acData) {
           if (data.success && data.data) {
             data = data.data
             if (!data.hasSign) {
-              let ss = await Faker.getBody(`https://prodev.m.jd.com/mall/active/${tid}/index.html`)
+              let ss = await Faker.getBody(`https://prodev.m.jd.com/mall/active/${acData}/index.html`)
               fp = ss.fp
               await getEid(ss, title)
             }
@@ -786,9 +790,9 @@ async function JDUserSign2(s, key, title, tid, acData) {
   return new Promise(resolve => {
     setTimeout(() => {
       let lkt = new Date().getTime()
-      let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
+      let lks = md5('' + invoke_key + lkt).toString()
       const JDUrl = {
-        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=JL1VTNRadM68cIMQ',
+        url: `https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=${invoke_key}`,
         headers: {
           Cookie: KEY,
           'lkt': lkt,
