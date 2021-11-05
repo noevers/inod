@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*
+'''
 # 星店长
-# 入口 复制到京东打开>   12:/￥T8kw4Dip0tI9Hy￥，邀你瓜分百万红包！
+# 入口 复制到京东打开> 12:/#TBjAj1BsQW1eFZ%，邀你瓜分百万红包！
 # 脚本功能为 完成任务
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
-
+cron: 0 6 * * *
+new Env('星店长,6号晚8点红包雨');
+'''
 import os,json,random,time,re,string,functools,asyncio
 import sys
 sys.path.append('../../tmp')
