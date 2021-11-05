@@ -20,7 +20,7 @@ sys.path.append(os.path.abspath('.'))
 try:
     import aiohttp
 except Exception as e:
-    print(e, "\n缺少aiohttp 模块，请执行命令 pip3 install --upgrade pip\n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp\n")
+    print(e, "\n请更新pip版本：pip3 install --upgrade pip \n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp\n")
     exit(3) 
 try:
     import requests
@@ -28,7 +28,7 @@ except Exception as e:
     print(str(e) + "\n缺少requests模块, 请执行命令：pip3 install requests\n")
 requests.packages.urllib3.disable_warnings()
 
-run_send='no'     # yes或no, yes则启用通知推送服务
+run_send='yes'     # yes或no, yes则启用通知推送服务
 
 
 # 获取pin
@@ -319,13 +319,12 @@ def main():
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
 
     asyncio.run(asyncmain())
-    
+
     if run_send=='yes':
         send('愤怒的锦鲤')   # 通知服务
 
 
 if __name__ == '__main__':
     main()
-
 
 
