@@ -26,6 +26,7 @@ $.shareUuid = '';
     let activityList = [{'id':'dz2110100000406501','endTime':'1638287999000'},];
     for (let i = 0; i < cookiesArr.length; i++) {
         $.index = i + 1;
+		let index = i + 1;
         cookie = cookiesArr[i];
         userName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
         console.log(`\n*****开始【京东账号${index}】${userName}*****\n`);
