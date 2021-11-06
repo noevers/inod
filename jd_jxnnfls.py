@@ -10,6 +10,7 @@
 cron: 5 6,8 * * *
 new Env('牛牛福利社');
 '''
+
 import os,json,random,time,re,string,functools,asyncio
 import sys
 sys.path.append('../../tmp')
@@ -407,15 +408,11 @@ def main():
     for inviteCode in inviteCode_list:
         for cookie in cookie_list:
             helpSign(cookie,inviteCode)
-            
-    msg('作者：wuye9999\n')
-    msg('地址:https://github.com/wuye999/myScripts')
+
     if run_send=='yes':
         send('牛牛福利社')   # 通知服务
 
 
 if __name__ == '__main__':
     main()
-
-
 
