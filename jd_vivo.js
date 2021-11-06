@@ -1,3 +1,4 @@
+
 /*
 第一个号助力作者，其他号助力第一个CK
 cron 10 2,9,17 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_vivo.js
@@ -21,7 +22,6 @@ $.shareUuid = '';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    let res = [];
 
     let activityList = [{'id':'dz2110100000406501','endTime':'1638287999000'},];
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -111,7 +111,9 @@ async function main() {
         await takePostRequest('draw');
         await $.wait(1500);
     }
-    if($.index === '1'){$.shareUuid = $.activityData.actorUuid;}
+    if($.index === 1){
+		$.shareUuid = $.activityData.actorUuid;
+	}
 }
 async function doTask(){
     $.taskValue = '';
