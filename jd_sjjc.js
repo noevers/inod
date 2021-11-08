@@ -5,8 +5,14 @@ boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.bo
 
 [task_local]
 #手机竞猜
-0 0 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_sjjc.js, tag= 手机竞猜
-
+0,20 0 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_sjjc.js, tag= 手机竞猜
+================Loon==============
+[Script]
+cron "0,20 0 * * *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_sjjc.js,tag= 手机竞猜
+===============Surge=================
+手机竞猜 = type=cron,cronexp="0,20 0 * * *",wake-system=1,timeout=3600,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_sjjc.js
+============小火箭=========
+sjjc = type=cron,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_sjjc.js, cronexpr="0,20 0 * * *", timeout=3600, enable=true
 */
 const Ariszy = '手机竞猜'
 const $ = Env(Ariszy)
@@ -79,6 +85,7 @@ for(let i = 0; i < cookiesArr.length; i++){
       $.index = i + 1;
        console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}助力模块*********\n`);
       await zy()
+      await formatcode()
 }
 
 })()
@@ -251,7 +258,6 @@ async function lottery(quizId){
     })
    })
   }
-  
 async function zy(){
 for(let i = 0; i < distinct(shareidArr).length;i++){
 console.log("开始内部助力"+shareidArr[i]+"\n")
@@ -290,7 +296,58 @@ await quiz(quizId)
    })
   }
 
+async function readShareCodes(){
+  return new Promise((resolve) => {
+    let url = {
+   		url: `https://raw.githubusercontent.com/Ariszy/TGBOT/main/sjjc.js`,       
+   	}
+   $.get(url,async(error, response, data) =>{
+    try{
+        const result = JSON.parse(data)
+        //$.log(data)
+        if(true){
+          var sharecodesArr = new Array()
+          for(var i in result){
+            sharecodesArr.push(result[i])
+          }
+          var sharecodeArr = new Array()
+          for(let i = 0; i < sharecodesArr.length; i ++){
+          for(var j in sharecodesArr[i]){
+            sharecodeArr.push(sharecodesArr[i][j].Code)
+          }
+}
+          //$.log(sharecodeArr)
+          CodeArr = sharecodeArr
+          return sharecodeArr
 
+}
+        }catch(e) {
+          $.logErr(e, response);
+      } finally {
+        resolve();
+      } 
+    })
+   })
+  } 
+
+async function formatcode(){
+await readShareCodes();
+var newsharecodes = [];
+var arr = CodeArr
+var count = arr.length;
+for (var i = 0; i < (5 - cookiesArr.length); i++) {
+    var index = ~~(Math.random() * count) + i;
+    newsharecodes[i] = arr[index];
+    arr[index] = arr[i];
+    count--;
+}
+console.log("随机取出"+(5 - cookiesArr.length)+"个助力码,账号"+`${$.UserName}即将助力【`+newsharecodes+"】\n");
+for(let i = 0; i < newsharecodes.length; i++){
+console.log(`开始第${i+1}次随机助力`+newsharecodes[i]+"\n")
+await dosupport(newsharecodes[i])
+await $.wait(1000*newsharecodes.length)
+}
+}
 //showmsg
 //boxjs设置tz=1，在12点<=20和23点>=40时间段通知，其余时间打印日志
 
