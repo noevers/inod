@@ -4,14 +4,14 @@ github：https://github.com/Ariszy/Private-Script
 boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.boxjs.json
 
 [task_local]
-50 1 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js, tag= 焕新带电生活
+50 0 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js, tag= 焕新带电生活
 ================Loon==============
 [Script]
-cron "50 1 * * *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js,tag= 焕新带电生活
+cron "50 0 * * *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js,tag= 焕新带电生活
 ===============Surge=================
-焕新带电生活 = type=cron,cronexp="50 1 * * *",wake-system=1,timeout=3600,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js
+焕新带电生活 = type=cron,cronexp="50 0 * * *",wake-system=1,timeout=3600,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js
 ============小火箭=========
-焕新带电生活 = type=cron,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js, cronexpr="50 1 * * *", timeout=3600, enable=true
+焕新带电生活 = type=cron,script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/jd_hxddsh.js, cronexpr="50 0 * * *", timeout=3600, enable=true
 */
 const $ = new Env('焕新带电生活')
 const notify = $.isNode() ?require('./sendNotify') : '';
