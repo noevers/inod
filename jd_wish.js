@@ -25,8 +25,8 @@ let message = '', allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let appIdArr = ['1E1NXxq0', '1FV1VwKc', '1FFRWxaY', '1FFVQyqw', '1FV1ZwKY'];
-let appNameArr = ['众筹许愿池', '惊喜大作战', '荣耀钞能力', '1111点心动', '好物好生活'];
+let appIdArr = ['1E1NXxq0', '1FV1VwKc', '1FFRWxaY', '1FFVQyqw', '1FV1ZwKY', '1FFdSxqw'];
+let appNameArr = ['众筹许愿池', '惊喜大作战', '荣耀钞能力', '1111点心动', '好物好生活', '焕新带电生活'];
 let appId, appName;
 $.shareCode = [];
 if ($.isNode()) {
@@ -68,6 +68,11 @@ if ($.isNode()) {
       }
     }
   }
+  if (allMessage) {
+    if ($.isNode()) await notify.sendNotify($.name, allMessage);
+    $.msg($.name, '', allMessage)
+  }
+
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -119,11 +124,13 @@ async function jd_wish() {
     } else {
       console.log(`可以抽奖${forNum}次，去抽奖\n`)
     }
+
     $.canLottery = true
     for (let j = 0; j < forNum && $.canLottery; j++) {
       await interact_template_getLotteryResult()
       await $.wait(2000)
     }
+    if (message) allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n${appName}\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`
 
   } catch (e) {
     $.logErr(e)
@@ -148,14 +155,17 @@ async function healthyDay_getHomeData(type = true) {
                     console.log(`签到`)
                     await harmony_collectScore({"appId":appId,"taskToken":vo.simpleRecordInfoVo.taskToken,"taskId":vo.taskId,"actionType":"0"}, vo.taskType)
                   } else if (vo.taskType === 1) {
+                    $.complete = false;
                     for (let key of Object.keys(vo.followShopVo)) {
                       let followShopVo = vo.followShopVo[key]
                       if (followShopVo.status !== 2) {
                         console.log(`【${followShopVo.shopName}】${vo.subTitleName}`)
                         await harmony_collectScore({"appId":appId,"taskToken":followShopVo.taskToken,"taskId":vo.taskId,"actionType":"0"})
+                        if ($.complete) break;
                       }
                     }
                   } else if (vo.taskType === 8) {
+                    $.complete = false;
                     for (let key of Object.keys(vo.productInfoVos)) {
                       let productInfoVos = vo.productInfoVos[key]
                       if (productInfoVos.status !== 2) {
@@ -163,9 +173,11 @@ async function healthyDay_getHomeData(type = true) {
                         await harmony_collectScore({"appId":appId,"taskToken":productInfoVos.taskToken,"taskId":vo.taskId,"actionType":"1"})
                         await $.wait(vo.waitDuration * 1000)
                         await harmony_collectScore({"appId":appId,"taskToken":productInfoVos.taskToken,"taskId":vo.taskId,"actionType":"0"})
+                        if ($.complete) break;
                       }
                     }
                   } else if (vo.taskType === 9 || vo.taskType === 26) {
+                    $.complete = false;
                     for (let key of Object.keys(vo.shoppingActivityVos)) {
                       let shoppingActivityVos = vo.shoppingActivityVos[key]
                       if (shoppingActivityVos.status !== 2) {
@@ -175,6 +187,7 @@ async function healthyDay_getHomeData(type = true) {
                           await $.wait(vo.waitDuration * 1000)
                         }
                         await harmony_collectScore({"appId":appId,"taskToken":shoppingActivityVos.taskToken,"taskId":vo.taskId,"actionType":"0"})
+                        if ($.complete) break;
                       }
                     }
                   } else if (vo.taskType === 14) {
@@ -229,6 +242,7 @@ function harmony_collectScore(body = {}, taskType = '') {
                 if (data.data.bizCode === 103) $.delcode = true
               } else {
                 console.log(body.actionType === "0" ? `完成任务失败：${data.data.bizMsg}\n` : data.data.bizMsg)
+                if (data.data.bizMsg === "任务已完成") $.complete = true;
               }
             }
           }
@@ -251,14 +265,17 @@ function interact_template_getLotteryResult() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            let userAwardsCacheDto = data && data.data && data.data.result && data.data.result.userAwardsCacheDto
+            let userAwardsCacheDto = data && data.data && data.data.result && data.data.result.userAwardsCacheDto;
             if (userAwardsCacheDto) {
               if (userAwardsCacheDto.type === 2) {
-                console.log(`抽中：${userAwardsCacheDto.jBeanAwardVo.quantity}${userAwardsCacheDto.jBeanAwardVo.ext}`)
+                console.log(`抽中：${userAwardsCacheDto.jBeanAwardVo.quantity}${userAwardsCacheDto.jBeanAwardVo.ext || `京豆`}`);
               } else if (userAwardsCacheDto.type === 0) {
                 console.log(`很遗憾未中奖~`)
+              } else if (userAwardsCacheDto.type === 1) {
+                console.log(`抽中：${userAwardsCacheDto.couponVo.prizeName}，金额${userAwardsCacheDto.couponVo.usageThreshold}-${userAwardsCacheDto.couponVo.quota}，使用时间${userAwardsCacheDto.couponVo.useTimeRange}`);
               } else {
-                console.log(JSON.stringify(data))
+                console.log(`抽中：${JSON.stringify(data)}`);
+                message += `抽中：${JSON.stringify(data)}\n`;
               }
             } else {
               $.canLottery = false
@@ -293,38 +310,6 @@ function taskUrl(function_id, body = {}) {
   }
 }
 
-function getAuthorShareCode(url) {
-  return new Promise(async resolve => {
-    const options = {
-      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
-    };
-    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
-      const tunnel = require("tunnel");
-      const agent = {
-        https: tunnel.httpsOverHttp({
-          proxy: {
-            host: process.env.TG_PROXY_HOST,
-            port: process.env.TG_PROXY_PORT * 1
-          }
-        })
-      }
-      Object.assign(options, { agent })
-    }
-    $.get(options, async (err, resp, data) => {
-      try {
-        resolve(JSON.parse(data))
-      } catch (e) {
-        // $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-    await $.wait(10000)
-    resolve();
-  })
-}
 
 function TotalBean() {
   return new Promise(async resolve => {
