@@ -8,7 +8,7 @@
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # 11 6 9:00 修bug
 cron: 15 6,8 * * *
-new Env('发现新宝藏');
+new Env('逛好物，赚京豆');
 '''
 
 import os,json,random,time,re,string,functools,asyncio
