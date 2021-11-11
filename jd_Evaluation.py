@@ -73,17 +73,17 @@ class getJDCookie(object):
                 pass
         if os.path.exists(ql_new):
             printf("当前环境青龙面板新版")
-            printf('依赖添加：pip3 install jieba')
+            printf('依赖添加：pip3 install jieba wheel')
             printf('请自行修改运行时间')
             return ql_new
         elif os.path.exists(ql_old):
             printf("当前环境青龙面板旧版")
-            printf('依赖添加：pip3 install jieba')
+            printf('依赖添加：pip3 install jieba wheel')
             printf('请自行修改运行时间')
             return ql_old
         elif os.path.exists(v4f):
             printf("当前环境V4")
-            printf('依赖添加：pip3 install jieba')
+            printf('依赖添加：pip3 install jieba wheel')
             printf('请自行修改运行时间')
             return v4f
         return curf
