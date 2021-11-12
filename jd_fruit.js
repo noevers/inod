@@ -1308,7 +1308,10 @@ function timeFormat(time) {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    newShareCodes = $.shareCodesArr[$.index - 1].split('@');
+    if($.shareCodesArr[$.index - 1].indexOf('@')>-1)
+       newShareCodes = $.shareCodesArr[$.index - 1].split('@');
+    else
+       newShareCodes = [];
 
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(newShareCodes)}`)
     resolve();
