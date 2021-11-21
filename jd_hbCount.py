@@ -1,6 +1,6 @@
 """
-const $ = new Env("历史红包统计");
-历史红包统计
+const $ = new Env("统计东哥历史红包");
+统计东哥历史红包
 """
 
 import requests
@@ -52,9 +52,9 @@ def getinfo(ck):
         }
         r = requests.get(url, headers=headers).json()
         if r['data']['unUseRedInfo']['redList'] == None:
-            print('\n【六个月红包总数】', count, '\n【累计红包总额】%.2f' % sum, '\n【已用红包总额】%.2f' % usedsum)
+            print('最近六个月累计红包总数', count, '累计红包总额 %.2f' % sum, '已使用红包总额 %.2f' % usedsum)
             print(
-                '\n ↓↓↓↓↓↓明细↓↓↓↓↓↓\n【京东】总额: %.2f, 已用: %.2f\n【京喜】总额: %.2f, 已用: %.2f\n【极速】总额: %.2f, 已用: %.2f\n【健康】总额: %.2f, 已用: %.2f\n【通用】总额: %.2f, 已用: %.2f\n' % (
+                '\n其中：\n京东商城：总金额%.2f 已使用：%.2f\n京喜：总金额%.2f 已使用：%.2f\n极速版：总金额%.2f 已使用：%.2f\n京东健康：总金额%.2f 已使用：%.2f\n通用红包：总金额%.2f 已使用：%.2f\n' % (
                 jdsum, usedjd, jxsum, usedjx, litesum, usedlite, healthsum, usedhealth, tysum, usedty))
             isNext = False
         else:
@@ -81,7 +81,6 @@ def getinfo(ck):
 
 
 if __name__ == '__main__':
-    printf('🔔历史红包统计, 开始!\n')
     try:
         cks = os.environ["JD_COOKIE"].split("&")
     except:
@@ -90,7 +89,7 @@ if __name__ == '__main__':
         f.close()
     for ck in cks:
         ptpin = re.findall(r"pt_pin=(.*?);", ck)[0]
-        printf("********开始京东账号" + ptpin + "********")
+        printf("--------开始京东账号" + ptpin + "--------")
         try:
             getinfo(ck)
         except:
