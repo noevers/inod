@@ -27,7 +27,8 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 
-run_send='yes'              # yes或no, yes则启用通知推送服务
+run_send='no'              # yes或no, yes则启用通知推送服务
+sceneid='JLHBhPageh5'
 
 
 # 获取pin
@@ -115,7 +116,7 @@ cookie_list=Judge_env().main_run()
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
@@ -153,6 +154,9 @@ class Msg(object):
                 print('获取通知服务失败，请检查网络连接...')
 Msg().main()   # 初始化通知服务 
 
+def log():
+    log_str=string.ascii_lowercase+string.digits
+    return ''.join(random.sample(log_str,8))+'~8,~'+''.join(random.sample(log_str,7))   
 
 def taskPostUrl(functionId, body, cookie):
     url=f'https://api.m.jd.com/api?appid=jinlihongbao&functionId={functionId}&loginType=2&client=jinlihongbao&t={gettimestamp()}&clientVersion=10.1.4&osVersion=-1'
@@ -179,13 +183,16 @@ def taskPostUrl(functionId, body, cookie):
 # 开启助力
 code_findall=re.compile(r'"code":(.*?),')
 def h5launch(cookie):
-    body={"followShop":1,"random":''.join(random.sample(string.digits, 6)),"log":"4817e3a2~8,~1wsv3ig","sceneid":"JLHBhPageh5"}
+    body={"followShop":1,"random":''.join(random.sample(string.digits, 6)),"log":log(),"sceneid":sceneid}
     res=taskPostUrl("h5launch", body, cookie)
     if not res:
         return
     if Code:=code_findall.findall(res):
-        str(Code:=Code[0])=='0'
-        msg(f"账号 {get_pin(cookie)} 开启助力码成功\n")
+        if str(Code[0])=='0':
+            msg(f"账号 {get_pin(cookie)} 开启助力码成功\n")
+        else:
+            msg(f"账号 {get_pin(cookie)} 开启助力码失败")
+            msg(res)
     else:
         msg(f"账号 {get_pin(cookie)} 开启助力码失败")
         msg(res)
@@ -208,7 +215,7 @@ def h5activityIndex(cookie):
 # 助力
 statusDesc_findall=re.compile(r',"statusDesc":"(.+?)"')
 def jinli_h5assist(cookie,redPacketId):
-    body={"redPacketId":redPacketId,"followShop":0,"random":''.join(random.sample(string.digits, 6)),"log":"42588613~8,~0iuxyee","sceneid":"JLHBhPageh5"}
+    body={"redPacketId":redPacketId,"followShop":0,"random":''.join(random.sample(string.digits, 6)),"log":log(),"sceneid":sceneid}
     res=taskPostUrl("jinli_h5assist", body, cookie)
     msg(f'账号 {get_pin(cookie)} 去助力{redPacketId}')
     if not res:
@@ -223,7 +230,7 @@ def jinli_h5assist(cookie,redPacketId):
 biz_msg_findall=re.compile(r'"biz_msg":"(.*?)"')
 discount_findall=re.compile(r'"discount":"(.*?)"')
 def h5receiveRedpacketAll(cookie):
-    body={"random":''.join(random.sample(string.digits, 6)),"log":"f88c05a0~8,~1iqo16j","sceneid":"JLHBhPageh5"}
+    body={"random":''.join(random.sample(string.digits, 6)),"log":log(),"sceneid":sceneid}
     res=taskPostUrl("h5receiveRedpacketAll", body, cookie)
     msg(f'账号 {get_pin(cookie)} 开红包')
     if not res:
@@ -253,7 +260,7 @@ def main():
     inviteCode_list=list()
 
     msg('***************************开启助力码***************\n')
-    [h5launch(cookie) for cookie in cookie_list]
+    [h5launch(cookie) for cookie in cookie_list_pin]
 
     msg('***************************获取助力码***************\n')
     [h5activityIndex(cookie) for cookie in cookie_list_pin]
@@ -266,7 +273,7 @@ def main():
         msg('没有需要助力的锦鲤红包助力码\n')
 
     msg('*******************开红包**************************\n')
-    [h5receiveRedpacketAll(cookie) for cookie in cookie_list]
+    [h5receiveRedpacketAll(cookie) for cookie in cookie_list_pin]
     
     if run_send=='yes':
         send('安静的锦鲤')   # 通知服务
