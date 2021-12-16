@@ -103,7 +103,7 @@ if ($.isNode()) {
     await pasture();
     await $.wait(2000);
   }
-  
+
   await shareCodesFormat()
   for (let i = 0; i < cookiesArr.length; i++) {
     $.cookie = cookiesArr[i];
@@ -183,6 +183,7 @@ async function pasture() {
           if (vo.completedTimes >= vo.configTargetTimes) {
             console.log(`助力已满，不上传助力码`)
           } else {
+            
             $.inviteCodeList.push($.homeInfo.sharekey);
             await $.wait(2000)
           }
@@ -861,9 +862,9 @@ function randomString(e) {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     $.newShareCodes = []
-
+    
     $.newShareCodes = [...new Set([...$.inviteCodeList])];
-
+    
     console.log(`\n您将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
@@ -924,7 +925,7 @@ async function requestAlgo() {
       "expandParams": ""
     })
   }
-  new Promise(async resolve => {
+  return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
         if (err) {
