@@ -197,20 +197,21 @@ def getTaskList(cookie):
     if res['code']==1:
         content_list=res['content']
         for content in content_list:
+            print(content);
             if taskId:=content['taskId']:
 
                 log.append(f"{get_pin(cookie)}:开始任务 {content['taskName']}")
                 log.append(f"{get_pin(cookie)}:等待 {content['watchTime']} 秒任务完成 ")
-
-                uid,tt=saveTaskRecord_2(cookie,taskId,content['taskType'])
-                time.sleep(content['watchTime']+1)
-                saveTaskRecord(cookie,taskId,content['taskType'],uid,tt)
-                log=functools.reduce(lambda a,i: a+'\n'+i,log)
-                msg(log)
-                if log:
-                    if log != ' ' and log != '\n':
-                        return getTaskList(cookie)
-                log=list()
+                if taskId!=-1 and taskId!=549:
+                   uid,tt=saveTaskRecord_2(cookie,taskId,content['taskType'])
+                   time.sleep(content['watchTime']+1)
+                   saveTaskRecord(cookie,taskId,content['taskType'],uid,tt)
+                   log=functools.reduce(lambda a,i: a+'\n'+i,log)
+                   msg(log)
+                   if log:
+                      if log != ' ' and log != '\n':
+                         return getTaskList(cookie)
+                   log=list()
         log.append(f'{get_pin(cookie)}: 全部任务已完成\n')
     else:
         log.append(f"{get_pin(cookie)}:{res['msg']}\n")
@@ -239,6 +240,7 @@ def saveTaskRecord_2(cookie,taskId,taskType):
     global log
     body={"taskId":taskId,"taskType":taskType}
     res=taskPostUrl("saveTaskRecord", body, cookie)
+    print(body); 
     if not res:
         return
     if res['code']==1:

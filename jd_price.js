@@ -6,7 +6,7 @@ by 标哥丶 220120
 ============Quantumultx===============
 [task_local]
 #京东保价
-39 20 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_price.js, tag=京东保价, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+15 0,20 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_price.js, tag=京东保价, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
@@ -87,6 +87,8 @@ let h5st = ''
             await $.wait(2000)
             await jstoken();
          }
+         
+         await $.wait(20000);  //增加延迟，减少频繁异常
       }
    }
    if (allMessage) {
