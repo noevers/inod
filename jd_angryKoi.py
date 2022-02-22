@@ -116,7 +116,7 @@ cookie_list=Judge_env().main_run()
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://raw.githubusercontent.com/noevers/inod/master/wu_sendNotify.py'
+            url = 'https://raw.githubusercontent.com/noevers/inod/master/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('wu_sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
